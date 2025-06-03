@@ -1,0 +1,326 @@
+/* ===========================
+   Global page background
+=========================== */
+:global(body) {
+  background-color: #c7d5e1 !important;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* ===========================
+   Global input and textarea fixes
+=========================== */
+input,
+textarea {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  min-width: 0;
+  text-align: left;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline-offset: 2px;
+  outline-color: transparent;
+  transition: outline-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline-color: #093866;
+}
+
+/* Fix caret on smaller screens like iPad Mini */
+@media only screen and (max-width: 768px) {
+  input,
+  textarea {
+    padding-right: 0.6rem;
+  }
+}
+
+/* ===========================
+   Top Navbar Styles
+=========================== */
+.topNavbar {
+  background-color: #093866 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+
+.topNavbarLink,
+.topNavbarBrand,
+.cartIcon {
+  color: rgba(245, 248, 248, 0.9) !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 15px;
+}
+
+.topNavbarLink:hover,
+.topNavbarBrand:hover,
+.cartIcon:hover {
+  color: #efeaeac4 !important;
+  text-decoration: none;
+}
+
+.topNavRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Always make cartIcon order 0 to appear first on all screen sizes */
+.cartIcon {
+  order: 0 !important;
+  margin-left: 0 !important;
+  font-size: 24px !important;
+}
+
+/* Responsive layout for top and bottom navbars */
+@media (max-width: 991.98px) {
+  .topNavbar {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .topNavRight {
+    width: 100%;
+    margin-top: 1rem;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+/* ===========================
+   Bottom Navbar Styles
+=========================== */
+.bottomNavbar {
+  background-color: #c7d5e1 !important;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+@media (max-width: 991.98px) {
+  .bottomNavbar {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    width: 100%;
+    align-items: flex-start;
+  }
+}
+
+.navLink {
+  color: #093866 !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 20px !important;
+}
+
+.navLink:hover {
+  color: grey !important;
+  text-decoration: none;
+}
+
+.bottomNavbarNav {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 991.98px) {
+  .bottomNavbarNav {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding-left: 1rem;
+    gap: 0.75rem;
+  }
+}
+
+.bottomNavbarNavItem {
+  margin: 0 20px;
+}
+
+/* ===========================
+   Dashboard Button
+=========================== */
+.dashboardBtn {
+  color: #004666 !important;
+  background-color: transparent;
+  border: none !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Josefin Sans', sans-serif !important;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@media (max-width: 991.98px) {
+  .dashboardBtn {
+    margin-top: 0.5rem;
+  }
+}
+
+.dashboardBtn:hover,
+.dashboardBtn:focus {
+  background-color: #efeaeac4 !important;
+  color: #004666 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ===========================
+   Dropdown Wrappers
+=========================== */
+.dropdownNav,
+.dashboardDropdownWrapper,
+.langSelectorWrapper {
+  position: relative;
+}
+
+/* Dropdown Menus */
+.productNavDropdown,
+.dashboardDropdown,
+.langDropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #efeaeae6 !important;
+  padding: 0.5rem 0 !important;
+  min-width: 180px;
+  z-index: 10;
+  list-style: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+  font-family: 'Josefin Sans', sans-serif;
+  color: #004666 !important;
+}
+
+/* Desktop hover show */
+@media (min-width: 992px) {
+  .dropdownNav:hover .productNavDropdown,
+  .dashboardDropdownWrapper:hover .dashboardDropdown,
+  .langSelectorWrapper:hover .langDropdown {
+    display: block;
+  }
+}
+
+/* Mobile dropdown toggle show */
+@media (max-width: 991.98px) {
+  .productNavDropdown.show,
+  .dashboardDropdown.show,
+  .langDropdown.show {
+    display: block !important;
+    position: static;
+    box-shadow: none;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+}
+
+/* Dropdown Items Unified */
+.productNavDropdownItem,
+.dashboardDropdownItem,
+.langDropdownItem {
+  padding: 0.5rem 1.25rem !important;
+  background-color: transparent !important;
+  color: #004666 !important;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.productNavDropdownItem:hover,
+.dashboardDropdownItem:hover,
+.langDropdownItem:hover {
+  background-color: #3432321c !important;
+  color: #004666 !important;
+}
+
+@media (max-width: 991.98px) {
+  .productNavDropdownItem,
+  .dashboardDropdownItem,
+  .langDropdownItem {
+    padding: 1rem 1.5rem !important;
+    font-size: 16px;
+  }
+}
+
+/* ===========================
+   Language Selector
+=========================== */
+.langSelector {
+  background-color: #d9e2e9 !important;
+  color: #004666 !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+@media (max-width: 991.98px) {
+  .langSelector {
+    margin-top: 0.5rem;
+    margin-left: 0;
+    align-self: center;
+  }
+}
+
+.langSelector:hover,
+.langSelector:focus {
+  background-color: #efeaeac4 !important;
+  color: #004666 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ===========================
+   Logo Image
+=========================== */
+.logoImage {
+  width: 150px;
+  height: 70px;
+  border-radius: 5px;
+  object-fit: cover;
+  border: 2px solid #093866;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+}

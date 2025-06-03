@@ -1,0 +1,78 @@
+/* Login.module.css (تعديل) */
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #dbeafe, #f8fafc);
+}
+
+.loginCard {
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+h2 {
+  color: #093866;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  color: #093866 !important;
+}
+
+.customLoginBtn {
+  background-color: #093866 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  transition: background-color 0.3s ease;
+}
+
+.customLoginBtn:hover {
+  background-color: grey !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.loginPrompt {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.3rem;
+  color: #093866;
+  font-weight: 800;
+}
+
+.loginPrompt a {
+  text-decoration: none;
+  color: #1e72f1;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.loginPrompt a:hover {
+  text-decoration: underline;
+  color: rgb(13, 40, 80);
+  font-size: larger;
+}
+.forgotPasswordWrapper {
+  text-align: left;
+  margin-top: 7px;
+}
+
+.forgotPasswordLink {
+  color: gray;
+  font-size: 0.97rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.forgotPasswordLink:hover {
+  color:#093866;
+  text-decoration: underline;
+}

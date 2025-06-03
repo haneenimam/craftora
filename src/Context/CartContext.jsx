@@ -1,0 +1,80 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const CartContext = createContext();
+
+export const useCart = () => useContext(CartContext);
+
+export const CartProvider = ({ children }) => {
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  // Add product or increase quantity (but not beyond stock)
+  const addToCart = (product) => {
+    const productId = product._id || product.id;
+    const stock = product.inStock ?? product.instock ?? product.stock ?? Infinity;
+
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find(
+        (item) => (item._id || item.id) === productId
+      );
+
+      if (existingProduct) {
+        if ((existingProduct.quantity || 1) >= stock) return prevCart;
+
+        return prevCart.map((item) =>
+          (item._id || item.id) === productId
+            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            : item
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  // Remove product from cart
+  const removeFromCart = (productId) => {
+    setCart((prevCart) =>
+      prevCart.filter((product) => (product._id || product.id) !== productId)
+    );
+  };
+
+  // Update product quantity directly (respect stock limits)
+  const updateQuantity = (productId, newQuantity) => {
+    setCart((prevCart) =>
+      prevCart.map((item) => {
+        if ((item._id || item.id) === productId) {
+          const stock = item.inStock ?? item.instock ?? item.stock ?? Infinity;
+          const validQuantity = Math.min(Math.max(newQuantity, 1), stock);
+          return { ...item, quantity: validQuantity };
+        }
+        return item;
+      })
+    );
+  };
+
+  // Calculate total price
+  const calculateTotal = () => {
+    return cart
+      .reduce(
+        (total, product) =>
+          total + (Number(product.price) || 0) * (product.quantity || 1),
+        0
+      )
+      .toFixed(2);
+  };
+
+  return (
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, updateQuantity, calculateTotal }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};

@@ -1,0 +1,84 @@
+.container {
+  background-color: #d9e4ed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  box-sizing: border-box;
+}
+
+/* Optional wrapper, you may use or remove */
+.imageWrapper {
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: 83vh;      /* desktop height unchanged */
+  max-height: 83vh;  /* ensure max height constraint */
+  height: auto;      /* maintain aspect ratio */
+  object-fit: cover;
+  display: block;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.backButton {
+  margin-top: 1rem;
+  padding: 1rem 8rem;
+  background-color: #093866;
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  font-size: 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  font-weight: 700;
+}
+
+.backButton:hover {
+  background-color: #fa715d;
+  color: #004aad;
+}
+
+/* ---------- RESPONSIVE STYLES ---------- */
+
+/* Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    justify-content: center; /* vertical center */
+    padding-top: 0;          /* remove top padding for perfect centering */
+  }
+
+  .image {
+    max-height: 70vh;
+    height: auto;
+  }
+
+  .backButton {
+    padding: 1rem 4rem;
+    font-size: 18px;
+  }
+}
+
+/* Mobile Devices (max-width: 767px) */
+@media (max-width: 767px) {
+  .container {
+    justify-content: center; /* vertical center */
+    padding-top: 0;          /* remove top padding */
+  }
+
+  .image {
+    max-height: 60vh;
+    height: auto;
+  }
+
+  .backButton {
+    padding: 0.75rem 2rem;
+    font-size: 16px;
+    width: 90%;
+    max-width: 300px;
+  }
+}
