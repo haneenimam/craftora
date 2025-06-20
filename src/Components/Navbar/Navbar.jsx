@@ -10,7 +10,7 @@ const categoryMap = {
   crochet: "Crochet",
   candles: "Candles",
   ceramic: "Ceramics",
-  "home essentials": "Home Essentials",
+  "home essential": "Home Essential",
 };
 
 const categories = [
@@ -19,7 +19,7 @@ const categories = [
   { key: "candles", labelEn: "Candles", labelAr: "شموع" },
   { key: "crochet", labelEn: "Crochet", labelAr: "كروشيه" },
   { key: "ceramic", labelEn: "Ceramics", labelAr: "سيراميك" },
-  { key: "home essentials", labelEn: "Home Essentials", labelAr: "الاحتياجات المنزلية" },
+  { key: "home essential", labelEn: "Home Essential", labelAr: "الاحتياجات المنزلية" },
 ];
 
 const Navbar = () => {

@@ -70,7 +70,6 @@ const App = () => {
           <Route path="/dashboard" element={<LayoutWithNavbarFooter Component={Dashboard} />} />
           <Route path="/dashboard/manage-users" element={<LayoutWithNavbarFooter Component={ManageUsers} />} />
           <Route path="/dashboard/orders" element={<LayoutWithNavbarFooter Component={OrdersPage} />} />
-          <Route path="/dashboard/products" element={<LayoutWithNavbarFooter Component={AdminView} />} />
           <Route path="/contact" element={<LayoutWithNavbarFooter Component={Contact} />} />
           <Route path="/category-products" element={<LayoutWithNavbarFooter Component={CategoryProducts} />} />
 
@@ -83,6 +82,16 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/dashboard/products"
+            element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <LayoutWithNavbarFooter Component={AdminView} />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/* Auth Pages with Footer only */}
           <Route path="/login" element={<LayoutWithFooterOnly Component={Login} />} />

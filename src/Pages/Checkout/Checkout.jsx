@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Checkout.module.css";
 import axios from "axios";
 
+
 const egyptGovernorates = [
   "Cairo",
   "Giza",
@@ -36,6 +37,8 @@ const egyptGovernorates = [
 
 
 const Checkout = () => {
+
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { cart, updateQuantity, removeFromCart } = useCart();
 
@@ -111,7 +114,7 @@ const Checkout = () => {
         if (!value.trim()) return "Phone number is required";
         if (!/^01[0-9]{9}$/.test(value)) return "Invalid Egyptian phone number";
         return "";
-      case "cardNumber":
+      /* case "cardNumber":
         if (form.paymentMethod === "Card") {
           if (!value.trim()) return "Card number is required";
           if (!/^\d{13,19}$/.test(value.replace(/\s+/g, "")))
@@ -137,8 +140,8 @@ const Checkout = () => {
         if (form.paymentMethod === "Card") {
           if (!value.trim()) return "CVV is required";
           if (!/^\d{3,4}$/.test(value)) return "CVV must be 3 or 4 digits";
-        }
-        return "";
+        } */
+        /* return ""; */
       default:
         return "";
     }
@@ -166,45 +169,54 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const orderData = {
-          shippingInfo: {
-            email: form.email,
-            firstName: form.firstName,
-            lastName: form.lastName,
-            address: form.address,
-            apartment: form.apartment,
-            city: form.city,
-            governorate: form.governorate,
-            postalCode: form.postalCode,
-            phone: form.phone,
-            country: form.country,
-          },
-          paymentMethod: form.paymentMethod,
-          totalPrice,
-          items: cart.map(item => ({
-            product: item._id || item.id,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-          status: "pending", // or "processing"
-        };
+    if (!validateForm()) {
+      alert("Please fix the errors in the form before submitting.");
+      return;
+    }
 
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
-          orderData
-        );
+    const orderData = {
+      shippingInfo: {
+        email: form.email,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        address: form.address,
+        apartment: form.apartment,
+        city: form.city,
+        governorate: form.governorate,
+        postalCode: form.postalCode,
+        phone: form.phone,
+        country: form.country,
+      },
+      paymentMethod: form.paymentMethod,
+      totalPrice,
+      items: cart.map(item => ({
+        product: item._id || item.id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      status: "pending",
+    };
 
+    try {
+      setLoading(true);
 
+      if (form.paymentMethod === "Cash on Delivery") {
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, orderData);
+        clearCart(); 
         alert("Order placed successfully!");
         navigate("/");
-      } catch (error) {
-        console.error("Order submission failed:", error);
-        alert("Failed to place order. Please try again.");
+      } else if (form.paymentMethod === "Card") {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/payment/create-checkout-session`,
+          { items: cart } 
+        );
+        window.location.href = response.data.url;
       }
-    } else {
-      alert("Please fix the errors in the form before submitting.");
+    } catch (error) {
+      console.error("Order submission failed:", error);
+      alert("Failed to place order. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -363,7 +375,7 @@ const Checkout = () => {
           </select>
         </div>
 
-        {form.paymentMethod === "Card" && (
+        {/* {form.paymentMethod === "Card" && (
           <>
             <div className={styles.formGroup}>
               <label>Card Number:</label>
@@ -421,7 +433,7 @@ const Checkout = () => {
               )}
             </div>
           </>
-        )}
+        )} */}
 
         <h2 className={styles.sectionTitle}>Order Summary</h2>
         <ul className={styles.orderSummary}>
@@ -498,9 +510,9 @@ const Checkout = () => {
         <button
           type="submit"
           className={styles.submitButton}
-          disabled={Object.values(errors).some((e) => e) || cart.length === 0}
+          disabled={loading || Object.values(errors).some((e) => e) || cart.length === 0}
         >
-          Place Order
+          {loading ? "Processing..." : "Place Order"}
         </button>
       </form>
     </div>

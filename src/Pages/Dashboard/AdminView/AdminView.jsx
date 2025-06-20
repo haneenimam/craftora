@@ -38,41 +38,65 @@ function AdminView() {
       });
   }, [page]);
 
-const handleDelete = (id) => {
-  if (window.confirm("Are you sure you want to delete this product?")) {
-    axiosInstance
-      .delete(`/api/products/${id}`)
-      .then(() => {
-        const updated = products.filter((product) => product._id !== id);
-        setProducts(updated);
-      })
-      .catch((err) => {
-        console.error("Failed to delete product:", err);
-        alert("Error deleting product");
-      });
-  }
-};
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      const token = localStorage.getItem("token");
+
+      axiosInstance
+        .delete(`/api/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          const updated = products.filter((product) => product._id !== id);
+          setProducts(updated);
+        })
+        .catch((err) => {
+          console.error("Failed to delete product:", err);
+          alert("Error deleting product");
+        });
+    }
+  };
+
 
 
   const handleEdit = (product) => {
-    setEditId(product.id);
+    setEditId(product._id);
     setEditData({
-      title: product.title,
+      name: product.name,
       price: product.price,
       category: product.category,
     });
   };
 
   const handleSave = (id) => {
-    const updatedProducts = products.map((product) => {
-      if (product.id === id) {
-        return { ...product, ...editData };
-      }
-      return product;
-    });
-    setProducts(updatedProducts);
-    setEditId(null);
+    const token = localStorage.getItem("token");
+
+    axiosInstance
+      .put(
+        `/api/products/${id}`,
+        editData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const updated = products.map((product) =>
+          product._id === id ? res.data : product
+        );
+
+        setProducts(updated);
+        setEditId(null);
+      })
+      .catch((err) => {
+        console.error("Error updating product:", err);
+        alert("Failed to update product.");
+      });
   };
+
 
   const handleCancel = () => {
     setEditId(null);
@@ -112,16 +136,16 @@ const handleDelete = (id) => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id}>
+            <tr key={product._id}>
               <td className={styles.tableCell}>{product.id}</td>
 
-              {editId === product.id ? (
+              {editId === product._id ? (
                 <>
                   <td className={styles.tableCell}>
                     <input
                       type="text"
-                      name="title"
-                      value={editData.title}
+                      name="name"
+                      value={editData.name}
                       onChange={handleChange}
                       className={`form-control ${styles.input}`}
                     />
@@ -147,18 +171,19 @@ const handleDelete = (id) => {
                 </>
               ) : (
                 <>
-                  <td className={styles.tableCell}>{product.title}</td>
+                  <td className={styles.tableCell}>{product.name}</td>
                   <td className={styles.tableCell}>${product.price}</td>
                   <td className={styles.tableCell}>{product.category}</td>
                 </>
               )}
+
 
               <td className={styles.tableCell}>
                 <div className={styles.actionButtons}>
                   {editId === product.id ? (
                     <>
                       <button
-                        onClick={() => handleSave(product.id)}
+                        onClick={() => handleSave(product._id)}
                         className={`btn ${styles.btnSuccess}`}
                       >
                         Save
@@ -179,7 +204,7 @@ const handleDelete = (id) => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => handleDelete(product._id)}
                         className={`btn btn-sm ${styles.btnDanger}`}
                       >
                         Delete
