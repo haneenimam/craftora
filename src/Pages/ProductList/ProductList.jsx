@@ -108,7 +108,7 @@ const ProductList = () => {
           >
             <span>{category || 'All Products'}</span>
             <ul className={`${styles.dropdownMenu} ${open ? styles.show : ''}`}>
-              {['All Products', 'Jewelry', 'Candles', 'Crochet', 'Ceramics', 'Home Essentials'].map((option) => (
+              {['All Products', 'Jewelry', 'Candles', 'Crochet', 'Ceramics', 'Home Essential'].map((option) => (
                 <li
                   key={option}
                   className={`${styles.dropdownOption} ${category === option ? styles.active : ''}`}
