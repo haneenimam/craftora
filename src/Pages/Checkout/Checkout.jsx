@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../../Context/LanguageContext"; 
+import { useLanguage } from "../../Context/LanguageContext";
 import styles from "./Checkout.module.css";
 import axios from "axios";
 
@@ -39,9 +39,9 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { cart, updateQuantity, removeFromCart } = useCart();
-  const { language } = useLanguage(); 
+  const { language } = useLanguage();
   const currency = language === "ar" ? "ج.م" : "EGP";
-  const t = (en, ar) => (language === "ar" ? ar : en); 
+  const t = (en, ar) => (language === "ar" ? ar : en);
 
   const increaseQuantity = (productId) => {
     const item = cart.find((item) => (item._id || item.id) === productId);
@@ -86,8 +86,6 @@ const Checkout = () => {
   );
 
   const validateField = (name, value) => {
-    const { language } = useLanguage(); 
-    const t = (en, ar) => (language === "ar" ? ar : en);
 
     switch (name) {
       case "email":
@@ -250,8 +248,7 @@ const Checkout = () => {
         console.log("Sending card payment payload:", payload);
 
         const response = await axios.post(
-          `${
-            import.meta.env.VITE_API_BASE_URL
+          `${import.meta.env.VITE_API_BASE_URL
           }/api/payment/create-checkout-session`,
           payload
         );
@@ -389,9 +386,8 @@ const Checkout = () => {
             name="governorate"
             value={form.governorate}
             onChange={handleChange}
-            className={`${styles.selectInput} ${
-              errors.governorate ? styles.inputError : ""
-            }`}
+            className={`${styles.selectInput} ${errors.governorate ? styles.inputError : ""
+              }`}
             aria-label={t("Select your governorate", "اختر المحافظة")}
           >
             <option value="">{t("Select Governorate", "اختر المحافظة")}</option>
