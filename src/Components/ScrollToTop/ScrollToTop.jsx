@@ -9,7 +9,7 @@ const ScrollToTop = () => {
     if (navigationType === 'PUSH' || navigationType === 'REPLACE') {
       window.scrollTo(0, 0);
     }
-    // For POP (back/forward), delay scrollTo top slightly to override native scroll restoration
+
     if (navigationType === 'POP') {
       const timeout = setTimeout(() => window.scrollTo(0, 0), 0);
       return () => clearTimeout(timeout);

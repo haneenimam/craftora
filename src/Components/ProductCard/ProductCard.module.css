@@ -8,7 +8,7 @@
   border-radius: 12px;
   overflow: hidden;
   padding: 12px;
-  height: 435px; /* fixed height on desktop */
+  height: 435px; 
   box-sizing: border-box;
   transition: transform 0.3s;
   min-width: 250px;
@@ -28,7 +28,7 @@
 }
 
 .details {
-  padding: 10px 0 0 0; /* reduced top padding */
+  padding: 10px 0 0 0; 
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -81,14 +81,14 @@
 
 .title {
   padding-left: 10px;
-  font-size: 27px; /* updated font size */
+  font-size: 27px; 
   color: #093866;
-  margin-bottom: 3px; /* small margin below title */
+  margin-bottom: 3px; 
 }
 
 .priceContainer {
   padding-left: 15px;
-  margin-bottom: 15px; /* reduced margin to bring closer to title */
+  margin-bottom: 15px; 
   gap: 4px;
   display: flex;
   align-items: flex-end;
@@ -107,7 +107,7 @@
   font-size: 14px;
   color: #444;
   margin: 0;
-  /* margin-left: 2px; */ /* no need if you use gap */
+ 
 }
 
 .stockStatus {
@@ -115,14 +115,14 @@
   font-weight: 600;
   text-align: right;
   white-space: nowrap;
-  margin-left: auto; /* pushes stockStatus to the far right */
+  margin-left: auto; 
 }
 
-/* Tablet */
+
 @media (max-width: 1024px) {
   .card {
-    height: auto;       /* change fixed height to auto */
-    min-height: 380px;  /* optional: adjust for uniform look */
+    height: auto;       
+    min-height: 380px;  
   }
 
   .image {
@@ -144,7 +144,7 @@
   }
 }
 
-/* Mobile */
+
 @media (max-width: 600px) {
   .card {
     min-width: unset;
@@ -155,7 +155,7 @@
     margin-left: auto;
     margin-right: auto;
     padding: 8px;
-    height: auto; /* auto height for mobile */
+    height: auto; 
   }
 
   .image {
@@ -190,7 +190,7 @@
   }
 }
 
-/* Very Small Mobile */
+
 @media (max-width: 400px) {
   .card {
     padding: 8px;
@@ -203,7 +203,7 @@
   }
 }
 
-/* iPhone and Small Screens */
+
 @media (max-width: 430px) {
   .card {
     min-width: unset;

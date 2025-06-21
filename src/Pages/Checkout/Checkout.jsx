@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useCart } from "../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../Context/LanguageContext"; 
 import styles from "./Checkout.module.css";
 import axios from "axios";
-
 
 const egyptGovernorates = [
   "Cairo",
@@ -35,12 +35,13 @@ const egyptGovernorates = [
   "Sohag",
 ];
 
-
 const Checkout = () => {
-
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { cart, updateQuantity, removeFromCart } = useCart();
+  const { language } = useLanguage(); 
+  const currency = language === "ar" ? "ج.م" : "EGP";
+  const t = (en, ar) => (language === "ar" ? ar : en); 
 
   const increaseQuantity = (productId) => {
     const item = cart.find((item) => (item._id || item.id) === productId);
@@ -85,63 +86,85 @@ const Checkout = () => {
   );
 
   const validateField = (name, value) => {
+    const { language } = useLanguage(); 
+    const t = (en, ar) => (language === "ar" ? ar : en);
+
     switch (name) {
       case "email":
-        if (!value) return "Email is required";
+        if (!value) return t("Email is required", "البريد الإلكتروني مطلوب");
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-          return "Invalid email address";
+          return t("Invalid email address", "البريد الإلكتروني غير صالح");
         return "";
+
       case "firstName":
-        if (!value.trim()) return "First name is required";
+        if (!value.trim())
+          return t("First name is required", "الاسم الأول مطلوب");
+        if (value.trim().length < 2)
+          return t(
+            "First name must be at least 2 characters",
+            "الاسم الأول يجب أن لا يقل عن حرفين"
+          );
         return "";
+
       case "lastName":
-        if (!value.trim()) return "Last name is required";
+        if (!value.trim())
+          return t("Last name is required", "اسم العائلة مطلوب");
+        if (value.trim().length < 2)
+          return t(
+            "Last name must be at least 2 characters",
+            "اسم العائلة يجب أن لا يقل عن حرفين"
+          );
         return "";
+
       case "address":
-        if (!value.trim()) return "Address is required";
+        if (!value.trim()) return t("Address is required", "العنوان مطلوب");
+        if (value.trim().length < 10)
+          return t(
+            "Address must be at least 10 characters",
+            "العنوان يجب أن يكون 10 أحرف على الأقل"
+          );
         return "";
+
       case "city":
-        if (!value.trim()) return "City is required";
+        if (!value.trim()) return t("City is required", "المدينة مطلوبة");
+        if (value.trim().length < 3)
+          return t(
+            "City must be at least 3 characters",
+            "يجب ألا يقل اسم المدينة عن 3 أحرف"
+          );
         return "";
+
       case "governorate":
-        if (!value) return "Governorate is required";
+        if (!value) return t("Governorate is required", "المحافظة مطلوبة");
         return "";
+
       case "postalCode":
-        if (value.trim() && !/^\d{5}$/.test(value))
-          return "Postal code must be 5 digits";
+        if (value.trim() && !/^\d{4,5}$/.test(value))
+          return t(
+            "Postal code must be 4 or 5 digits",
+            "الرمز البريدي يجب أن يكون 4 أو 5 أرقام"
+          );
         return "";
+
       case "phone":
-        if (!value.trim()) return "Phone number is required";
-        if (!/^01[0-9]{9}$/.test(value)) return "Invalid Egyptian phone number";
+        if (!value.trim())
+          return t("Phone number is required", "رقم الهاتف مطلوب");
+        if (!/^(010|011|012|015)[0-9]{8}$/.test(value))
+          return t(
+            "Phone must start with 010, 011, 012, or 015 and be 11 digits long",
+            "رقم الهاتف يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015 ويكون 11 رقمًا"
+          );
         return "";
-      /* case "cardNumber":
-        if (form.paymentMethod === "Card") {
-          if (!value.trim()) return "Card number is required";
-          if (!/^\d{13,19}$/.test(value.replace(/\s+/g, "")))
-            return "Invalid card number";
-        }
+
+      case "country":
+        if (!value.trim()) return t("Country is required", "الدولة مطلوبة");
+        if (value.trim().toLowerCase() !== "egypt")
+          return t(
+            "Currently, we only ship to Egypt",
+            "حالياً، نشحن فقط داخل مصر"
+          );
         return "";
-      case "cardName":
-        if (form.paymentMethod === "Card" && !value.trim())
-          return "Cardholder name is required";
-        return "";
-      case "expiry":
-        if (form.paymentMethod === "Card") {
-          if (!value.trim()) return "Expiry date is required";
-          if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value))
-            return "Expiry date must be MM/YY";
-          const [month, year] = value.split("/");
-          const expiryDate = new Date(`20${year}`, month);
-          const now = new Date();
-          if (expiryDate < now) return "Card expiry date must be in the future";
-        }
-        return "";
-      case "cvv":
-        if (form.paymentMethod === "Card") {
-          if (!value.trim()) return "CVV is required";
-          if (!/^\d{3,4}$/.test(value)) return "CVV must be 3 or 4 digits";
-        } */
-        /* return ""; */
+
       default:
         return "";
     }
@@ -157,7 +180,6 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -169,8 +191,14 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) {
-      alert("Please fix the errors in the form before submitting.");
+      alert(
+        t(
+          "Please fix the errors in the form before submitting.",
+          "يرجى تصحيح الأخطاء في النموذج قبل الإرسال."
+        )
+      );
       return;
     }
 
@@ -189,7 +217,7 @@ const Checkout = () => {
       },
       paymentMethod: form.paymentMethod,
       totalPrice,
-      items: cart.map(item => ({
+      items: cart.map((item) => ({
         product: item._id || item.id,
         quantity: item.quantity,
         price: item.price,
@@ -201,20 +229,50 @@ const Checkout = () => {
       setLoading(true);
 
       if (form.paymentMethod === "Cash on Delivery") {
-        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, orderData);
-        clearCart(); 
-        alert("Order placed successfully!");
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
+          orderData
+        );
+        clearCart();
+        alert(t("Order placed successfully!", "تم تنفيذ الطلب بنجاح!"));
         navigate("/");
       } else if (form.paymentMethod === "Card") {
+        const payload = {
+          items: cart.map((item) => ({
+            title: item.title,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          email: form.email,
+          totalPrice: parseFloat(totalPrice.toFixed(2)),
+        };
+
+        console.log("Sending card payment payload:", payload);
+
         const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/payment/create-checkout-session`,
-          { items: cart } 
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/payment/create-checkout-session`,
+          payload
         );
-        window.location.href = response.data.url;
+
+        if (response.data?.url) {
+          window.location.href = response.data.url;
+        } else {
+          throw new Error("Stripe session URL not received.");
+        }
       }
     } catch (error) {
-      console.error("Order submission failed:", error);
-      alert("Failed to place order. Please try again.");
+      console.error(
+        "Order submission failed:",
+        error?.response?.data || error.message
+      );
+      alert(
+        t(
+          "Failed to place order. Please try again.",
+          "فشل تنفيذ الطلب. حاول مرة أخرى من فضلك."
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -223,14 +281,18 @@ const Checkout = () => {
   return (
     <div className={styles.checkoutContainer}>
       <form onSubmit={handleSubmit} className={styles.checkoutForm} noValidate>
-        <h2 className={styles.sectionTitle}>Contact</h2>
+        <h2 className={styles.sectionTitle}>
+          {t("Contact", "معلومات الاتصال")}
+        </h2>
+
         <div className={styles.formGroup}>
-          <label>Email:</label>
+          <label>{t("Email:", "البريد الإلكتروني:")}</label>
           <input
             type="email"
             name="email"
             value={form.email}
             onChange={handleChange}
+            placeholder={t("Enter your email", "أدخل بريدك الإلكتروني")}
             className={errors.email ? styles.inputError : ""}
           />
           {errors.email && (
@@ -238,19 +300,23 @@ const Checkout = () => {
           )}
         </div>
 
-        <h2 className={styles.sectionTitle}>Delivery</h2>
+        <h2 className={styles.sectionTitle}>
+          {t("Delivery", "معلومات التوصيل")}
+        </h2>
+
         <div className={styles.formGroup}>
-          <label>Country/Region:</label>
+          <label>{t("Country/Region:", "الدولة / المنطقة:")}</label>
           <input type="text" name="country" value="Egypt" readOnly />
         </div>
 
         <div className={styles.formGroup}>
-          <label>First Name:</label>
+          <label>{t("First Name:", "الاسم الأول:")}</label>
           <input
             type="text"
             name="firstName"
             value={form.firstName}
             onChange={handleChange}
+            placeholder={t("Enter your first name", "أدخل الاسم الأول")}
             className={errors.firstName ? styles.inputError : ""}
           />
           {errors.firstName && (
@@ -259,12 +325,13 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Last Name:</label>
+          <label>{t("Last Name:", "اسم العائلة:")}</label>
           <input
             type="text"
             name="lastName"
             value={form.lastName}
             onChange={handleChange}
+            placeholder={t("Enter your last name", "أدخل اسم العائلة")}
             className={errors.lastName ? styles.inputError : ""}
           />
           {errors.lastName && (
@@ -273,12 +340,16 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Address:</label>
+          <label>{t("Address:", "العنوان:")}</label>
           <input
             type="text"
             name="address"
             value={form.address}
             onChange={handleChange}
+            placeholder={t(
+              "Street name, building number, etc.",
+              "اسم الشارع، رقم المبنى، ..."
+            )}
             className={errors.address ? styles.inputError : ""}
           />
           {errors.address && (
@@ -287,23 +358,25 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Apartment (optional):</label>
+          <label>{t("Apartment (optional):", "الشقة (اختياري):")}</label>
           <input
             type="text"
             name="apartment"
             value={form.apartment}
             onChange={handleChange}
+            placeholder={t("Apartment, floor, etc.", "الشقة، الدور، ...")}
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label>City:</label>
+          <label>{t("City:", "المدينة:")}</label>
           <input
             type="text"
             name="city"
             value={form.city}
             onChange={handleChange}
             className={errors.city ? styles.inputError : ""}
+            placeholder={t("Enter your city", "أدخل المدينة")}
           />
           {errors.city && (
             <span className={styles.errorMsg}>{errors.city}</span>
@@ -311,16 +384,17 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Governorate:</label>
+          <label>{t("Governorate:", "المحافظة:")}</label>
           <select
             name="governorate"
             value={form.governorate}
             onChange={handleChange}
-            className={`${styles.selectInput} ${errors.governorate ? styles.inputError : ""
-              }`}
-            aria-label="Select your governorate"
+            className={`${styles.selectInput} ${
+              errors.governorate ? styles.inputError : ""
+            }`}
+            aria-label={t("Select your governorate", "اختر المحافظة")}
           >
-            <option value="">Select Governorate</option>
+            <option value="">{t("Select Governorate", "اختر المحافظة")}</option>
             {egyptGovernorates.map((gov, idx) => (
               <option key={idx} value={gov}>
                 {gov}
@@ -333,13 +407,16 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Postal Code (optional):</label>
+          <label>
+            {t("Postal Code (optional):", "الرمز البريدي (اختياري):")}
+          </label>
           <input
             type="text"
             name="postalCode"
             value={form.postalCode}
             onChange={handleChange}
             className={errors.postalCode ? styles.inputError : ""}
+            placeholder={t("Enter postal code", "أدخل الرمز البريدي")}
           />
           {errors.postalCode && (
             <span className={styles.errorMsg}>{errors.postalCode}</span>
@@ -347,95 +424,41 @@ const Checkout = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Phone:</label>
+          <label>{t("Phone:", "رقم الهاتف:")}</label>
           <input
             type="tel"
             name="phone"
             value={form.phone}
             onChange={handleChange}
             className={errors.phone ? styles.inputError : ""}
+            placeholder={t("Enter your phone number", "أدخل رقم الهاتف")}
           />
           {errors.phone && (
             <span className={styles.errorMsg}>{errors.phone}</span>
           )}
         </div>
 
-        <h2 className={styles.sectionTitle}>Payment</h2>
+        <h2 className={styles.sectionTitle}>{t("Payment", "الدفع")}</h2>
 
         <div className={styles.formGroup}>
-          <label>Payment Method:</label>
+          <label>{t("Payment Method:", "طريقة الدفع:")}</label>
           <select
             name="paymentMethod"
             value={form.paymentMethod}
             onChange={handleChange}
             className={styles.selectInput}
           >
-            <option value="Cash on Delivery">Cash on Delivery</option>
-            <option value="Card">Card</option>
+            <option value="Cash on Delivery">
+              {t("Cash on Delivery", "الدفع عند الاستلام")}
+            </option>
+            <option value="Card">{t("Card", "بطاقة")}</option>
           </select>
         </div>
 
-        {/* {form.paymentMethod === "Card" && (
-          <>
-            <div className={styles.formGroup}>
-              <label>Card Number:</label>
-              <input
-                type="text"
-                name="cardNumber"
-                value={form.cardNumber}
-                onChange={handleChange}
-                className={errors.cardNumber ? styles.inputError : ""}
-              />
-              {errors.cardNumber && (
-                <span className={styles.errorMsg}>{errors.cardNumber}</span>
-              )}
-            </div>
+        <h2 className={styles.sectionTitle}>
+          {t("Order Summary", "ملخص الطلب")}
+        </h2>
 
-            <div className={styles.formGroup}>
-              <label>Cardholder Name:</label>
-              <input
-                type="text"
-                name="cardName"
-                value={form.cardName}
-                onChange={handleChange}
-                className={errors.cardName ? styles.inputError : ""}
-              />
-              {errors.cardName && (
-                <span className={styles.errorMsg}>{errors.cardName}</span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Expiry Date (MM/YY):</label>
-              <input
-                type="text"
-                name="expiry"
-                value={form.expiry}
-                onChange={handleChange}
-                className={errors.expiry ? styles.inputError : ""}
-              />
-              {errors.expiry && (
-                <span className={styles.errorMsg}>{errors.expiry}</span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>CVV:</label>
-              <input
-                type="password"
-                name="cvv"
-                value={form.cvv}
-                onChange={handleChange}
-                className={errors.cvv ? styles.inputError : ""}
-              />
-              {errors.cvv && (
-                <span className={styles.errorMsg}>{errors.cvv}</span>
-              )}
-            </div>
-          </>
-        )} */}
-
-        <h2 className={styles.sectionTitle}>Order Summary</h2>
         <ul className={styles.orderSummary}>
           {cart.map((item) => {
             const productId = item._id || item.id;
@@ -455,19 +478,19 @@ const Checkout = () => {
                       <span className={styles.productTitle}>{item.title}</span>
                       <span className={styles.productPrice}>
                         <span className={styles.priceContainer}>
-                          {item.price.toFixed(2)}
-                          <span className={styles.currency}>EGP</span>
+                          {item.price.toFixed(2)}{" "}
+                          <span className={styles.currency}>{currency}</span>
                         </span>
                       </span>
                     </div>
 
                     <span className={styles.quantityNumber}>
-                      {item.quantity}
+                      {t("Qty:", "الكمية:")} {item.quantity}
                     </span>
 
                     <span className={styles.productTotalPrice}>
                       {(item.price * item.quantity).toFixed(2)}{" "}
-                      <span className={styles.currency}>EGP</span>
+                      <span className={styles.currency}>{currency}</span>
                     </span>
 
                     <div className={styles.qtyControls}>
@@ -496,12 +519,13 @@ const Checkout = () => {
               </li>
             );
           })}
+
           <li className={styles.total}>
-            <strong>Total</strong>{" "}
+            <strong>{t("Total", "الإجمالي")}</strong>{" "}
             <strong>
               <span className={styles.priceContainer}>
                 {totalPrice.toFixed(2)}
-                <span className={styles.currency}>EGP</span>
+                <span className={styles.currency}>{currency}</span>
               </span>
             </strong>
           </li>
@@ -510,9 +534,13 @@ const Checkout = () => {
         <button
           type="submit"
           className={styles.submitButton}
-          disabled={loading || Object.values(errors).some((e) => e) || cart.length === 0}
+          disabled={
+            loading || Object.values(errors).some((e) => e) || cart.length === 0
+          }
         >
-          {loading ? "Processing..." : "Place Order"}
+          {loading
+            ? t("Processing...", "جاري المعالجة...")
+            : t("Place Order", "إتمام الطلب")}
         </button>
       </form>
     </div>

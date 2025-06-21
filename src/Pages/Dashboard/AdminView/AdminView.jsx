@@ -20,15 +20,17 @@ function AdminView() {
       .get(`/api/products?page=${page}`)
       .then((res) => {
         const data = res.data;
+        let productsData = [];
         if (Array.isArray(data)) {
-          setProducts(data);
+          productsData = data;
         } else if (Array.isArray(data.products)) {
-          setProducts(data.products);
+          productsData = data.products;
         } else if (data.data && Array.isArray(data.data.products)) {
-          setProducts(data.data.products);
+          productsData = data.data.products;
         } else {
           throw new Error("Unexpected API response structure");
         }
+        setProducts(productsData);
         setLoading(false);
       })
       .catch((err) => {
@@ -40,17 +42,11 @@ function AdminView() {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      const token = localStorage.getItem("token");
-
       axiosInstance
-        .delete(`/api/products/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .delete(`/api/products/${id}`)
         .then(() => {
-          const updated = products.filter((product) => product._id !== id);
-          setProducts(updated);
+          setProducts((prev) => prev.filter((product) => product._id !== id));
+          if (editId === id) setEditId(null); // لو بتعدل نفس المنتج المحذوف نلغي التعديل
         })
         .catch((err) => {
           console.error("Failed to delete product:", err);
@@ -59,44 +55,30 @@ function AdminView() {
     }
   };
 
-
-
   const handleEdit = (product) => {
     setEditId(product._id);
     setEditData({
-      name: product.name,
-      price: product.price,
-      category: product.category,
+      title: product.title || "",
+      price: product.price || "",
+      category: product.category || "",
     });
   };
 
   const handleSave = (id) => {
-    const token = localStorage.getItem("token");
-
+    // هنا ممكن تبعت الطلب للسيرفر لتحديث المنتج في الداتا بيز
     axiosInstance
-      .put(
-        `/api/products/${id}`,
-        editData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .put(`/api/products/${id}`, editData)
       .then((res) => {
-        const updated = products.map((product) =>
-          product._id === id ? res.data : product
+        setProducts((prev) =>
+          prev.map((product) => (product._id === id ? res.data : product))
         );
-
-        setProducts(updated);
         setEditId(null);
       })
       .catch((err) => {
-        console.error("Error updating product:", err);
-        alert("Failed to update product.");
+        console.error("Failed to update product:", err);
+        alert("Error updating product");
       });
   };
-
 
   const handleCancel = () => {
     setEditId(null);
@@ -124,12 +106,13 @@ function AdminView() {
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Admin - Products</h1>
-      <table className={`table table-bordered table-hover table-striped ${styles.table}`}>
+      <table
+        className={`table table-bordered table-hover table-striped ${styles.table}`}
+      >
         <thead className={styles.tableHead}>
           <tr>
-            <th>ID</th>
             <th>Name</th>
-            <th>Price</th>
+            <th>Price (EGP)</th>
             <th>Category</th>
             <th>Actions</th>
           </tr>
@@ -137,15 +120,13 @@ function AdminView() {
         <tbody>
           {products.map((product) => (
             <tr key={product._id}>
-              <td className={styles.tableCell}>{product.id}</td>
-
               {editId === product._id ? (
                 <>
                   <td className={styles.tableCell}>
                     <input
                       type="text"
-                      name="name"
-                      value={editData.name}
+                      name="title"
+                      value={editData.title}
                       onChange={handleChange}
                       className={`form-control ${styles.input}`}
                     />
@@ -171,16 +152,15 @@ function AdminView() {
                 </>
               ) : (
                 <>
-                  <td className={styles.tableCell}>{product.name}</td>
-                  <td className={styles.tableCell}>${product.price}</td>
+                  <td className={styles.tableCell}>{product.title}</td>
+                  <td className={styles.tableCell}>{product.price}</td>
                   <td className={styles.tableCell}>{product.category}</td>
                 </>
               )}
 
-
               <td className={styles.tableCell}>
                 <div className={styles.actionButtons}>
-                  {editId === product.id ? (
+                  {editId === product._id ? (
                     <>
                       <button
                         onClick={() => handleSave(product._id)}
@@ -217,6 +197,23 @@ function AdminView() {
           ))}
         </tbody>
       </table>
+
+      <div className={styles.pagination}>
+        <button
+          className={`btn btn-outline-primary ${styles.pageButton}`}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <span className={styles.pageInfo}>Page {page}</span>
+        <button
+          className={`btn btn-outline-primary ${styles.pageButton}`}
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

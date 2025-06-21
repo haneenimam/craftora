@@ -4,6 +4,7 @@
   padding: 40px 20px;
   font-family: 'Josefin Sans', 'Overpass', sans-serif;
   color: #093866;
+  box-sizing: border-box;
 }
 
 .checkoutForm {
@@ -11,6 +12,7 @@
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 .sectionTitle {
@@ -36,14 +38,16 @@
 .formGroup select {
   padding: 12px;
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #ccc;
   width: 100%;
   background-color: #fff;
   transition: border-color 0.3s ease;
+  min-height: 48px;
+  box-sizing: border-box;
 }
 
-/* Improved Select Input Styling */
+
 .selectInput {
   appearance: none;
   -webkit-appearance: none;
@@ -55,11 +59,16 @@
   cursor: pointer;
 }
 
-/* Payment Method Select Specific Styling */
+
 .formGroup select[name="paymentMethod"] {
   font-weight: 600;
   background-color: #f8f9fa;
   border: 2px solid #e9ecef;
+}
+
+
+.formGroup select[name="governate"] {
+  font-weight: 500;
 }
 
 .orderSummary {
@@ -230,59 +239,80 @@ select:focus {
   box-shadow: 0 0 2px #093866;
 }
 
-/* ------------------ RESPONSIVE STYLES ------------------ */
 
 @media (max-width: 480px) {
   .checkoutContainer {
-    padding: 20px 15px;
+    padding: 20px 12px;
     max-width: 100%;
   }
 
   .checkoutForm {
-    padding: 20px;
+    padding: 18px;
   }
 
   .sectionTitle {
-    font-size: 1.3rem;
-    margin: 20px 0 10px;
+    font-size: 1.25rem;
+    margin: 20px 0 12px;
+    padding-bottom: 4px;
+  }
+
+  .formGroup {
+    margin-bottom: 14px;
+  }
+
+  .formGroup label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
   }
 
   .formGroup input,
   .formGroup select {
-    font-size: 0.9rem;
-    padding: 12px;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    min-height: 44px;
   }
 
-  /* Improved select inputs for mobile */
+
   .selectInput {
-    padding: 12px;
+    padding: 10px 12px;
     background-position: right 10px center;
+    background-size: 0.9em;
+    padding-right: 2.2em;
   }
 
-  /* Payment method select specific */
+ 
   .formGroup select[name="paymentMethod"] {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    border-width: 1px;
+    background-color: #f5f7fa;
+  }
+
+
+  .formGroup select[name="governate"] {
+    font-weight: 500;
+    font-size: 0.95rem;
   }
 
   .summaryItem {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     padding: 10px 0;
   }
 
   .itemDetails {
-    gap: 8px;
+    gap: 0px;
+    width: 50%;
   }
 
   .itemDetails img {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 
   .infoWrapper {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
   }
 
@@ -301,17 +331,18 @@ select:focus {
 
   .qtyControls {
     gap: 4px;
+    margin-top: 4px;
   }
 
   .qtyButton {
     padding: 3px 6px;
     font-size: 12px;
-    min-width: 24px;
-    height: 24px;
+    min-width: 26px;
+    height: 26px;
   }
 
   .total {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;
@@ -319,23 +350,67 @@ select:focus {
 
   .submitButton {
     padding: 12px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .checkoutContainer {
+    padding: 25px 15px;
+    max-width: 100%;
+  }
+
+  .checkoutForm {
+    padding: 22px;
+  }
+
+  .sectionTitle {
+    font-size: 1.35rem;
+    margin: 25px 0 15px;
+  }
+
+  .formGroup {
+    margin-bottom: 15px;
+  }
+
+  .formGroup input,
+  .formGroup select {
+    font-size: 0.98rem;
+    padding: 11px 12px;
+    min-height: 46px;
+  }
+
+
+  .selectInput {
+    background-size: 0.95em;
+    padding-right: 2.3em;
+  }
+
+
+  .formGroup select[name="paymentMethod"] {
+    font-size: 1rem;
+    border-width: 1.5px;
+  }
+
+
+  .formGroup select[name="governate"] {
+    font-size: 0.98rem;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .checkoutContainer {
     max-width: 680px;
-    padding: 30px 25px;
+    padding: 30px 20px;
   }
 
   .checkoutForm {
-    padding: 25px 30px;
+    padding: 25px;
   }
 
   .sectionTitle {
     font-size: 1.4rem;
-    margin: 25px 0 12px;
+    margin: 25px 0 15px;
   }
 
   .formGroup input,
@@ -344,10 +419,22 @@ select:focus {
     padding: 12px;
   }
 
+
+  .selectInput {
+    padding: 12px;
+    background-position: right 12px center;
+  }
+
+
+  .formGroup select[name="paymentMethod"] {
+    font-size: 1.05rem;
+    border-width: 1.5px;
+  }
+
   .summaryItem {
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 14px !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
   }
 
   .itemDetails img {
@@ -369,5 +456,5 @@ select:focus {
 }
 
 @media (min-width: 1025px) {
-  /* No changes for desktop, original styles apply */
+ 
 }

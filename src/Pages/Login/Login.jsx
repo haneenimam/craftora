@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Login.module.css";
+import { useAuth } from "../../Context/Auth"; // context
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,8 @@ function Login() {
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
+
+  const { login } = useAuth(); // from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,7 +42,6 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-
       const data = await res.json();
 
       if (!res.ok) {
@@ -47,11 +49,10 @@ function Login() {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
+      login(data.user); // update context
+      localStorage.setItem("token", data.token); // save token
       navigate("/");
-    } catch (err) {
+    } catch {
       setServerError("Something went wrong. Please try again.");
     }
   };
@@ -59,41 +60,46 @@ function Login() {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
-        <h3 className={styles.heading}>Login</h3>
+        <h2 className={`text-center fw-bold ${styles.heading}`}>Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className={`form-label ${styles.formLabel}`}>Email address</label>
             <input
               type="email"
-              className={`form-control ${emailError ? "is-invalid" : ""}`}
+              className={`form-control ${styles.inputField} ${emailError ? "is-invalid" : ""}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {emailError && <div className="text-danger mt-1">{emailError}</div>}
+            {emailError && <div className="invalid-feedback">{emailError}</div>}
           </div>
 
           <div className="mb-3">
             <label className={`form-label ${styles.formLabel}`}>Password</label>
             <input
               type="password"
-              className={`form-control ${passwordError ? "is-invalid" : ""}`}
+              className={`form-control ${styles.inputField} ${passwordError ? "is-invalid" : ""}`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {passwordError && <div className="text-danger mt-1">{passwordError}</div>}
+            {passwordError && <div className="invalid-feedback">{passwordError}</div>}
+
+            <div className={styles.forgotPasswordWrapper}>
+              <a href="/forgot-password" className={styles.forgotPasswordLink}>
+                Forgot Password?
+              </a>
+            </div>
           </div>
 
           {serverError && <div className="text-danger text-center mb-2">{serverError}</div>}
 
-          <button type="submit" className={`btn ${styles.customLoginBtn} w-100`}>
+          <button type="submit" className={`btn btn-lg w-100 rounded-3 shadow-sm ${styles.customLoginBtn}`}>
             Login
           </button>
 
-          <div className="text-center mt-3">
-            <span>Don't have an account? </span>
-            <a href="/signup" className="text-primary text-decoration-none fw-semibold">
-              Sign Up
-            </a>
+          <div className={styles.loginPrompt}>
+            <small>
+              Don't have an account? <a href="/signup">Sign Up</a>
+            </small>
           </div>
         </form>
       </div>

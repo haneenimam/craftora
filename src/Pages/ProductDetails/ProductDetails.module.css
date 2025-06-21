@@ -1,4 +1,4 @@
-/* ========== GLOBAL RESET ========== */
+
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ html, body {
   overflow-y: auto;
 }
 
-/* ========== PRODUCT DETAILS ========== */
+
 .product-details {
   font-family: 'Josefin Sans', 'Overpass', sans-serif;
   color: #093866;
@@ -139,7 +139,7 @@ html, body {
   padding: 2rem;
 }
 
-/* ========== QUANTITY CONTROL ========== */
+
 .quantity-control {
   display: flex;
   align-items: center;
@@ -170,7 +170,7 @@ html, body {
   background-color: #04213f;
 }
 
-/* ========== STOCK STATUS ========== */
+
 .low-stock {
   color: #d8ba41;
   font-weight: bold;
@@ -181,7 +181,7 @@ html, body {
   font-style: italic;
 }
 
-/* ========== ACTION ROW ========== */
+
 .action-row {
   display: flex;
   align-items: center;
@@ -190,7 +190,7 @@ html, body {
   flex-wrap: wrap;
 }
 
-/* ========== RESPONSIVE ========== */
+
 @media (max-width: 767px) {
   .product-details-flex {
     flex-direction: column;
@@ -286,7 +286,7 @@ html, body {
   }
 }
 
-/* ========== UPDATE ONLY ========== */
+
 .product-stock-status {
   margin-top: 0.5rem;
   font-weight: bold;

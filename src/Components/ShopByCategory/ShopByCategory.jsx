@@ -1,153 +1,127 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../Context/LanguageContext";
 import styles from "./ShopByCategory.module.css";
 
 const categories = [
-  { name: "Jewelry", image: "jewelry.jpeg" },
-  { name: "Crochet", image: "crochet.jpeg" },
-  { name: "Candles", image: "candles.jpeg" },
-  { name: "Ceramics", image: "ceramic.jpeg" },
-  { name: "Home Essentials", image: "homeess.jpeg" },
+  { key: "jewelry", image: "jewelry.jpeg" },
+  { key: "crochet", image: "crochet.jpeg" },
+  { key: "candles", image: "candles.jpeg" },
+  { key: "ceramic", image: "ceramic.jpeg" },
+  { key: "home_essentials", image: "homeess.jpeg" },
 ];
 
-// Use exact backend category names to match backend expectations
+
+const categoryNames = {
+  en: {
+    jewelry: "Jewelry",
+    crochet: "Crochet",
+    candles: "Candles",
+    ceramic: "Ceramics",
+    home_essentials: "Home Essentials",
+  },
+  ar: {
+    jewelry: "إكسسوارات",
+    crochet: "كروشيه",
+    candles: "شموع",
+    ceramic: "سيراميك",
+    home_essentials: "الاحتياجات المنزلية",
+  },
+};
+
+
 const categoryMap = {
   jewelry: "Jewelry",
   crochet: "Crochet",
   candles: "Candles",
   ceramic: "Ceramics",
-  "home essentials": "Home Essential", // singular as in your old code
+  home_essentials: "Home Essential",
 };
 
 const ShopByCategory = () => {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 414);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 414);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleShopNow = (categoryName) => {
-    const backendCategory = categoryMap[categoryName.toLowerCase()] || categoryName;
+  const handleShopNow = (categoryKey) => {
+    const backendCategory = categoryMap[categoryKey] || categoryKey;
     navigate(`/category-products?category=${encodeURIComponent(backendCategory)}`);
   };
 
-  // Mobile: render all categories in one column
+  const title = language === "ar" ? "تسوق حسب الفئة" : "Shop by Category";
+  const shopNowText = language === "ar" ? "تسوق الآن" : "Shop Now";
+
+  const renderCard = (category, idx, cardSizeClass) => {
+    const translatedName = categoryNames[language]?.[category.key] || category.key;
+
+    return (
+      <div
+        key={idx}
+        className={`${styles["category-card"]} ${styles[cardSizeClass]}`}
+        style={{ backgroundImage: `url(${category.image})` }}
+        onClick={() => handleShopNow(category.key)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleShopNow(category.key);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        <div className={styles.overlay}>
+          <h3 className={styles["category-name"]}>{translatedName}</h3>
+          <button
+            className={styles["shop-button"]}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleShopNow(category.key);
+            }}
+          >
+            {shopNowText}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+
   if (isMobile) {
     return (
       <section className={styles["shop-by-category"]}>
-        <h2 className={styles["section-title"]}>Shop by Category</h2>
+        <h2 className={styles["section-title"]}>{title}</h2>
         <div className={styles["category-row"]}>
-          {categories.map((category, idx) => {
-            return (
-              <div
-                key={idx}
-                className={`${styles["category-card"]} ${styles["mobile-card"]}`}
-                style={{ backgroundImage: `url(${category.image})` }}
-                onClick={() => handleShopNow(category.name)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    handleShopNow(category.name);
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <div className={styles.overlay}>
-                  <h3 className={styles["category-name"]}>{category.name}</h3>
-                  <button
-                    className={styles["shop-button"]}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleShopNow(category.name);
-                    }}
-                  >
-                    Shop Now
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          {categories.map((category, idx) =>
+            renderCard(category, idx, "mobile-card")
+          )}
         </div>
       </section>
     );
   }
 
-  // Desktop / Tablet: two rows, first row 2 large cards, second row 3 small cards
+
   return (
     <section className={styles["shop-by-category"]}>
-      <h2 className={styles["section-title"]}>Shop by Category</h2>
+      <h2 className={styles["section-title"]}>{title}</h2>
 
-      {/* First row - 2 larger cards */}
       <div className={`${styles["category-row"]} ${styles["large-row"]}`}>
-        {categories.slice(0, 2).map((category, idx) => (
-          <div
-            key={idx}
-            className={`${styles["category-card"]} ${styles["large-card"]}`}
-            style={{ backgroundImage: `url(${category.image})` }}
-            onClick={() => handleShopNow(category.name)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleShopNow(category.name);
-              }
-            }}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={styles.overlay}>
-              <h3 className={styles["category-name"]}>{category.name}</h3>
-              <button
-                className={styles["shop-button"]}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleShopNow(category.name);
-                }}
-              >
-                Shop Now
-              </button>
-            </div>
-          </div>
-        ))}
+        {categories.slice(0, 2).map((category, idx) =>
+          renderCard(category, idx, "large-card")
+        )}
       </div>
 
-      {/* Second row - 3 smaller cards */}
       <div className={`${styles["category-row"]} ${styles["small-row"]}`}>
-        {categories.slice(2).map((category, idx) => (
-          <div
-            key={idx + 2}
-            className={`${styles["category-card"]} ${styles["small-card"]}`}
-            style={{ backgroundImage: `url(${category.image})` }}
-            onClick={() => handleShopNow(category.name)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handleShopNow(category.name);
-              }
-            }}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={styles.overlay}>
-              <h3 className={styles["category-name"]}>{category.name}</h3>
-              <button
-                className={styles["shop-button"]}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleShopNow(category.name);
-                }}
-              >
-                Shop Now
-              </button>
-            </div>
-          </div>
-        ))}
+        {categories.slice(2).map((category, idx) =>
+          renderCard(category, idx + 2, "small-card")
+        )}
       </div>
     </section>
   );

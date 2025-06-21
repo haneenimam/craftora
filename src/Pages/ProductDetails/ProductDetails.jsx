@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../Apis/config";
 import { useCart } from "../../Context/CartContext";
+import { useLanguage } from "../../Context/LanguageContext"; 
 import styles from "./ProductDetails.module.css";
 
 const ProductDetails = () => {
@@ -9,6 +10,7 @@ const ProductDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { language } = useLanguage();
 
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
@@ -66,7 +68,10 @@ const ProductDetails = () => {
   const stock = product.inStock ?? product.stock ?? product.quantity ?? 0;
 
   return (
-    <div className={`${styles["product-details"]} container py-4`}>
+    <div
+      className={`${styles["product-details"]} container py-4`}
+      style={language === "ar" ? { direction: "ltr" } : {}}
+    >
       <div className={`${styles["product-details-flex"]} row`}>
         <div className={`${styles["product-image"]} col-md-6`}>
           <img
@@ -95,10 +100,9 @@ const ProductDetails = () => {
             <span className={styles.currency}>EGP</span>
           </div>
 
-          {/* Stock status text below price */}
           {stock <= 5 && stock > 0 && (
             <p className={`${styles["product-stock-status"]} ${styles["low-stock"]}`}>
-              Hurry! Only {stock} item{stock > 1 ? "s" : ""} left in stock.
+              Hurry! Only {stock} item{stock > 1 && "s"} left in stock.
             </p>
           )}
           {stock === 0 && (
@@ -117,7 +121,6 @@ const ProductDetails = () => {
                 Buy Now
               </button>
 
-              {/* Quantity counter beside Buy Now button */}
               <div className={styles["quantity-counter"]}>
                 <button onClick={handleDecrease} disabled={quantity <= 1}>
                   -

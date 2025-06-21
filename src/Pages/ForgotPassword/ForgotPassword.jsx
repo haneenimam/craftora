@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.css";
-import axiosInstance from '../../Apis/config'; 
+import axiosInstance from "../../Apis/config";
+
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,12 +22,14 @@ function ForgotPassword() {
     try {
       const { data } = await axiosInstance.post("/api/auth/forgot-password", { email });
 
-      setMessage("Password reset link sent! Check your email.");
+      if (data.success && data.userId) {
+        setMessage("Verification code sent to your email.");
+        navigate(`/reset-password/${data.userId}`, { state: { email } });
+      } else {
+        setError("Email not found or reset not allowed.");
+      }
     } catch (err) {
-    
-      setError(
-        err.response?.data?.message || "Failed to send reset email. Try again later."
-      );
+      setError(err.response?.data?.message || "Failed to send reset email. Try again later.");
     }
   };
 
@@ -37,7 +42,7 @@ function ForgotPassword() {
             <label className={styles.label}>Email address</label>
             <input
               type="email"
-              className={`${styles.input} form-control`}
+              className={`form-control ${styles.input}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
@@ -48,7 +53,7 @@ function ForgotPassword() {
           {message && <div className="text-success mb-2">{message}</div>}
 
           <button type="submit" className={`btn w-100 ${styles.resetBtn}`}>
-            Send Reset Link
+            Send
           </button>
         </form>
       </div>

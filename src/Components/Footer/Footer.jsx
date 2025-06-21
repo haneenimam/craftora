@@ -1,12 +1,21 @@
 import React from 'react';
 import styles from './Footer.module.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { useLanguage } from '../../Context/LanguageContext';
 
 const Footer = () => {
+  const { language } = useLanguage();
+
+  const contactUsText = language === 'ar' ? 'تواصل معنا' : 'Contact Us';
+  const copyright =
+    language === 'ar'
+      ? '© 2025 كرافتورا. جميع الحقوق محفوظة.'
+      : '© 2025 Craftora. All rights reserved.';
+
   return (
     <footer className={`${styles['custom-footer']} footer py-3`}>
       <div className="container d-flex align-items-center justify-content-center position-relative flex-wrap">
-        {/* Logo aligned left */}
+      
         <img
           src="/logo.jpg"
           alt="Local Market Logo"
@@ -14,16 +23,16 @@ const Footer = () => {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         />
 
-        {/* Centered content */}
+       
         <div className="text-center w-100">
-          <p>© 2025 Local Market. All rights reserved.</p>
+          <p>{copyright}</p>
 
           <div className={styles['contact-row']}>
-            <span className={styles['contact-label']}>Contact Us</span>
+            <span className={styles['contact-label']}>{contactUsText}</span>
             <div className={styles['contact-icons']}>
-              <FaEnvelope />
-              <FaPhone />
-              <FaMapMarkerAlt />
+              <FaEnvelope title="Email" />
+              <FaPhone title="Phone" />
+              <FaMapMarkerAlt title="Location" />
             </div>
           </div>
         </div>

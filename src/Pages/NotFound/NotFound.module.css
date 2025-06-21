@@ -8,16 +8,16 @@
   box-sizing: border-box;
 }
 
-/* Optional wrapper, you may use or remove */
+
 .imageWrapper {
   width: 100%;
 }
 
 .image {
   width: 100%;
-  height: 83vh;      /* desktop height unchanged */
-  max-height: 83vh;  /* ensure max height constraint */
-  height: auto;      /* maintain aspect ratio */
+  height: 83vh;      
+  max-height: 83vh;  
+  height: auto;     
   object-fit: cover;
   display: block;
   border: none;
@@ -43,13 +43,11 @@
   color: #004aad;
 }
 
-/* ---------- RESPONSIVE STYLES ---------- */
 
-/* Tablets (max-width: 1024px) */
 @media (max-width: 1024px) {
   .container {
-    justify-content: center; /* vertical center */
-    padding-top: 0;          /* remove top padding for perfect centering */
+    justify-content: center; 
+    padding-top: 0;         
   }
 
   .image {
@@ -63,11 +61,11 @@
   }
 }
 
-/* Mobile Devices (max-width: 767px) */
+
 @media (max-width: 767px) {
   .container {
-    justify-content: center; /* vertical center */
-    padding-top: 0;          /* remove top padding */
+    justify-content: center;
+    padding-top: 0;          
   }
 
   .image {

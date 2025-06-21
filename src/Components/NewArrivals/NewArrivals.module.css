@@ -128,7 +128,7 @@
   font-size: 14px;
 }
 
-/* Desktop Hover Enhancements */
+
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   .newArrivalsProductsContainer {
     gap: 80px;
@@ -171,7 +171,6 @@
   }
 }
 
-/* Mobile: Always show hoverActions + flat interaction styles */
 @media (hover: none) and (pointer: coarse) {
   .hoverActions {
     opacity: 1 !important;
@@ -194,7 +193,7 @@
   }
 }
 
-/* Tablet */
+
 @media (min-width: 600px) and (max-width: 1023px) {
   .newArrivalsProductsContainer {
     gap: 40px;
@@ -218,7 +217,7 @@
   }
 }
 
-/* Mobile margin fix */
+
 @media (max-width: 767px) {
   .newArrivalsSection {
     margin: 20px 0 !important;

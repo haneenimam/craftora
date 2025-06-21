@@ -1,8 +1,12 @@
 import React from 'react';
-import styles from './HeroSection.module.css';  // Import CSS Module
+import styles from './HeroSection.module.css';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../Context/LanguageContext';
 
 const HeroSection = () => {
+  const { language } = useLanguage();
+  const t = (en, ar) => (language === 'ar' ? ar : en);
+
   return (
     <div className={styles['hero-container']}>
       <div id="carouselExample" className={`carousel slide ${styles.carousel}`} data-bs-ride="carousel">
@@ -25,7 +29,7 @@ const HeroSection = () => {
           data-bs-slide="prev"
         >
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Previous</span>
+          <span className="visually-hidden">{t("Previous", "السابق")}</span>
         </button>
         <button
           className="carousel-control-next"
@@ -34,7 +38,7 @@ const HeroSection = () => {
           data-bs-slide="next"
         >
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Next</span>
+          <span className="visually-hidden">{t("Next", "التالي")}</span>
         </button>
       </div>
     </div>

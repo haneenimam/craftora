@@ -69,9 +69,8 @@ function Signup() {
               <label className={styles.formLabel}>First Name</label>
               <input
                 type="text"
-                className={`form-control form-control-lg rounded-3 ${
-                  errors.firstName ? "is-invalid" : ""
-                }`}
+                          className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+
                 value={firstName}
                 onChange={(e) => {
                   setFirstName(e.target.value);
@@ -86,9 +85,8 @@ function Signup() {
               <label className={styles.formLabel}>Last Name</label>
               <input
                 type="text"
-                className={`form-control form-control-lg rounded-3 ${
-                  errors.lastName ? "is-invalid" : ""
-                }`}
+                          className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+
                 value={lastName}
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -105,9 +103,8 @@ function Signup() {
             <label className={styles.formLabel}>Email address</label>
             <input
               type="email"
-              className={`form-control form-control-lg rounded-3 ${
-                errors.email ? "is-invalid" : ""
-              }`}
+                       className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -144,9 +141,8 @@ function Signup() {
             <label className={styles.formLabel}>Password</label>
             <input
               type="password"
-              className={`form-control form-control-lg rounded-3 ${
-                errors.password ? "is-invalid" : ""
-              }`}
+                        className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -162,9 +158,8 @@ function Signup() {
             <label className={styles.formLabel}>Confirm Password</label>
             <input
               type="password"
-              className={`form-control form-control-lg rounded-3 ${
-                errors.confirmPassword ? "is-invalid" : ""
-              }`}
+                         className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);

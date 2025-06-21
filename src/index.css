@@ -1,4 +1,4 @@
-/* index.css or main.css */
+
 
 html, body, #root {
   height: 100%;
@@ -21,12 +21,12 @@ body > div {
   flex-direction: column;
 }
 
-/* Ensure the footer sticks to the bottom */
+
 footer {
   margin-top: auto;
 }
 
-/* Optional: Box sizing reset */
+
 * {
   box-sizing: border-box;
 }

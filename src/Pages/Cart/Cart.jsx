@@ -1,10 +1,24 @@
-import React from 'react';
-import { useCart } from '../../Context/CartContext';
-import { Link } from 'react-router-dom';
-import styles from './CartPage.module.css';
+import React from "react";
+import { useCart } from "../../Context/CartContext";
+import { useLanguage } from "../../Context/LanguageContext";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import styles from "./CartPage.module.css";
 
 const CartPage = () => {
   const { cart, removeFromCart, calculateTotal, updateQuantity } = useCart();
+  const { language } = useLanguage();
+  const t = (en, ar) => (language === "ar" ? ar : en);
+  const currencyLabel = language === "ar" ? "ج.م" : "EGP";
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ Read the last full URL (with query) from localStorage
+  const lastShoppingPage = localStorage.getItem("lastShoppingPage") || "/product-list";
+
+  // ✅ Determine where the user came from, fallback to the lastShoppingPage
+  const from = location.state?.from;
+  const previousPage = !from || from === "/checkout" || from === "/cart" ? lastShoppingPage : from;
 
   const handleIncrease = (product) => {
     const stock = product.inStock ?? product.stock ?? product.quantity ?? Infinity;
@@ -21,16 +35,22 @@ const CartPage = () => {
 
   return (
     <div className={styles.cartPage}>
-      <h2 className={styles.title}>Your Cart</h2>
+      <h2 className={styles.title}>{t("Your Cart", "عربة التسوق")}</h2>
 
       {cart.length === 0 ? (
-        <p className={styles.emptyMessage}>Your cart is empty.</p>
+        <p className={styles.emptyMessage}>
+          {t("Your cart is empty.", "عربة التسوق فارغة.")}
+        </p>
       ) : (
         <div>
           <div className={styles.cartItems}>
             {cart.map((product) => {
               const productId = product._id || product.id;
-              const imgSrc = product.image || product.images?.[0] || product.thumbnail || '/default-product.jpg';
+              const imgSrc =
+                product.image ||
+                product.images?.[0] ||
+                product.thumbnail ||
+                "/default-product.jpg";
               const stock = product.inStock ?? product.stock ?? product.quantity ?? Infinity;
 
               return (
@@ -40,42 +60,55 @@ const CartPage = () => {
                       src={imgSrc}
                       alt={product.title}
                       className={styles.thumbnail}
-                      onError={(e) => (e.target.src = '/default-product.jpg')}
+                      onError={(e) => (e.target.src = "/default-product.jpg")}
                     />
-                    <div className={styles.itemText}>
+                    <div
+                      className={`${styles.itemText} ${
+                        language === "ar" ? styles.itemTextArabic : ""
+                      }`}
+                    >
                       <p className={styles.productTitle}>{product.title}</p>
 
                       <p className={styles.productPrice}>
                         <span className={styles.priceContainer}>
                           {product.price}
-                          <span className={styles.currency}>EGP</span>
-                        </span>{' '}
-                        x {product.quantity}
+                          <span className={styles.currency}>{currencyLabel}</span>
+                        </span>{" "}
+                        {t("x", "x")} {product.quantity}
                       </p>
 
                       <p className={styles.productTotalPrice}>
-                        Total:{' '}
+                        {t("Total:", "الإجمالي:")}{" "}
                         <span className={styles.priceContainer}>
                           {(product.price * product.quantity).toFixed(2)}
-                          <span className={styles.currency}>EGP</span>
+                          <span className={styles.currency}>{currencyLabel}</span>
                         </span>
                       </p>
                     </div>
                   </div>
 
-                  {/* Group quantity controls and remove button */}
                   <div className={styles.actionsGroup}>
                     <div className={styles.quantityControl}>
-                      <button onClick={() => handleDecrease(product)} disabled={product.quantity <= 1}>-</button>
+                      <button
+                        onClick={() => handleDecrease(product)}
+                        disabled={product.quantity <= 1}
+                      >
+                        -
+                      </button>
                       <span>{product.quantity}</span>
-                      <button onClick={() => handleIncrease(product)} disabled={product.quantity >= stock}>+</button>
+                      <button
+                        onClick={() => handleIncrease(product)}
+                        disabled={product.quantity >= stock}
+                      >
+                        +
+                      </button>
                     </div>
 
                     <button
                       className={styles.removeButton}
                       onClick={() => removeFromCart(productId)}
                     >
-                      Remove
+                      {t("Remove", "إزالة")}
                     </button>
                   </div>
                 </div>
@@ -85,18 +118,22 @@ const CartPage = () => {
 
           <div className={styles.cartSummary}>
             <h4 className={styles.totalPrice}>
-              Total Price:{' '}
+              {t("Total Price:", "السعر الإجمالي:")}{" "}
               <span className={styles.priceContainer}>
                 {calculateTotal()}
-                <span className={styles.totalCurrency}>EGP</span>
+                <span className={styles.totalCurrency}>{currencyLabel}</span>
               </span>
             </h4>
             <div className={styles.actions}>
-              <Link to="/product-list" className={styles.continueShopping}>
-                Continue Shopping
-              </Link>
+              <button
+                onClick={() => navigate(previousPage)}
+                className={`${styles.continueShopping} ${styles.buttonReset}`}
+              >
+                {t("Continue Shopping", "متابعة التسوق")}
+              </button>
+
               <Link to="/checkout" className={styles.checkoutButton}>
-                Checkout
+                {t("Checkout", "إتمام الشراء")}
               </Link>
             </div>
           </div>

@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Navbar.module.css";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../Context/LanguageContext";
 import { useCart } from "../../Context/CartContext";
+import { useAuth } from "../../Context/Auth";  // ← استيراد useAuth
 
 const categoryMap = {
   jewelry: "Jewelry",
@@ -25,6 +27,7 @@ const categories = [
 const Navbar = () => {
   const { language, changeLanguage } = useLanguage();
   const { cart } = useCart();
+  const { user, logout } = useAuth();
   const cartCount = cart.length;
   const navigate = useNavigate();
 
@@ -87,7 +90,7 @@ const Navbar = () => {
   }, [productsDropdownOpen, dashboardDropdownOpen, languageDropdownOpen]);
 
   const handleCategoryNavigation = (categoryLabelEn, key) => {
-    clearTimeout(dropdownTimerRef.current); // stop timer on category click
+    clearTimeout(dropdownTimerRef.current);
     if (key === "all-products") {
       navigate("/product-list");
     } else {
@@ -97,20 +100,31 @@ const Navbar = () => {
     if (isMobile) setProductsDropdownOpen(false);
   };
 
-  const handleProductsClick = (e) => {
+  const handleDropdownClick = (dropdownType) => {
+    if (dropdownType !== 'products') setProductsDropdownOpen(false);
+    if (dropdownType !== 'dashboard') setDashboardDropdownOpen(false);
+    if (dropdownType !== 'language') setLanguageDropdownOpen(false);
+    
+    if (dropdownType === 'products') {
+      setProductsDropdownOpen(prev => !prev);
+    } else if (dropdownType === 'dashboard') {
+      setDashboardDropdownOpen(prev => !prev);
+    } else if (dropdownType === 'language') {
+      setLanguageDropdownOpen(prev => !prev);
+    }
+    
+    clearTimeout(dropdownTimerRef.current);
+    
     if (isMobile) {
-      e.preventDefault();
-      const newOpen = !productsDropdownOpen;
-      setProductsDropdownOpen(newOpen);
-
-      if (newOpen) {
-        dropdownTimerRef.current = setTimeout(() => {
+      dropdownTimerRef.current = setTimeout(() => {
+        if (dropdownType === 'products') {
           setProductsDropdownOpen(false);
-          // No auto-navigation anymore
-        }, 5000);
-      } else {
-        clearTimeout(dropdownTimerRef.current);
-      }
+        } else if (dropdownType === 'dashboard') {
+          setDashboardDropdownOpen(false);
+        } else if (dropdownType === 'language') {
+          setLanguageDropdownOpen(false);
+        }
+      }, 5000);
     }
   };
 
@@ -120,6 +134,15 @@ const Navbar = () => {
 
   const handleMouseLeave = (setter) => {
     if (!isMobile) setter(false);
+  };
+
+  const handleLanguageChange = () => {
+    changeLanguage(oppositeLang);
+    setLanguageDropdownOpen(false);
+  };
+
+  const handleDashboardLinkClick = () => {
+    setDashboardDropdownOpen(false);
   };
 
   return (
@@ -137,65 +160,81 @@ const Navbar = () => {
             <Link to="/cart" className={`${styles.cartIcon} ${styles.cartIconHover} position-relative`}>
               <FaShoppingCart size={22} />
               {cartCount > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span className={`position-absolute top-0 start-100 translate-middle ${styles.cartBadge} rounded-pill bg-danger`}>
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            <Link to="/login" className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link`}>
-              {language === "ar" ? "تسجيل الدخول" : "Login"}
-            </Link>
+            {/* Auth Section */}
+            {user ? (
+              <div className="dropdown">
+                <button
+                  className="btn btn-sm text-white dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ minWidth: "130px" }}
+                >
+                  {`Hi, ${user.firstName} (${user.role})`}
+                </button>
+                <ul className={`dropdown-menu ${styles.profileDropdownMenu}`}>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => {
+                        logout();
+                        navigate("/");
+                      }}
+                    >
+                      {language === "ar" ? "تسجيل الخروج" : "Logout"}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link`}>
+                  {language === "ar" ? "تسجيل الدخول" : "Login"}
+                </Link>
+                <Link to="/signup" className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link`}>
+                  {language === "ar" ? "التسجيل" : "Register"}
+                </Link>
+              </>
+            )}
 
-            <Link to="/signup" className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link`}>
-              {language === "ar" ? "التسجيل" : "Register"}
-            </Link>
+            {/* Dashboard and Language dropdowns - Desktop Only */}
+           {!isMobile && user && (user.role === "admin" || user.role === "seller") && (
+  <div
+    ref={dashboardDropdownRef}
+    className={`dropdown ${styles.dashboardDropdownWrapper}`}
+    onMouseEnter={() => handleMouseEnter(setDashboardDropdownOpen)}
+    onMouseLeave={() => handleMouseLeave(setDashboardDropdownOpen)}
+  >
+    <span
+      className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link dropdown-toggle`}
+      onClick={() => handleDropdownClick('dashboard')}
+      style={{ cursor: "pointer" }}
+    >
+      {language === "ar" ? "لوحة التحكم" : "Dashboard"}
+    </span>
+    <ul className={`dropdown-menu ${styles.dashboardDropdown} ${dashboardDropdownOpen ? "show" : ""}`}>
+      {user.role === "admin" && (
+        <>
+          <li><Link to="/dashboard" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "الرئيسية" : "Main"}</Link></li>
+          <li><Link to="/dashboard/manage-users" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "إدارة المستخدمين" : "Manage Users"}</Link></li>
+          <li><Link to="/dashboard/edit-products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "تعديل المنتجات" : "Edit Products"}</Link></li>
+          <li><Link to="/dashboard/orders" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "الطلبات" : "Orders"}</Link></li>
+          <li><Link to="/dashboard/products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "إدارة المنتجات" : "Admin Products"}</Link></li>
+        </>
+      )}
+      {user.role === "seller" && (
+        <li><Link to="/dashboard/edit-products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "تعديل المنتجات" : "Edit Products"}</Link></li>
+      )}
+    </ul>
+  </div>
+)}
 
-            {/* Dashboard Dropdown */}
-            <div
-              ref={dashboardDropdownRef}
-              className={`dropdown ${styles.dropdownNav}`}
-              onMouseEnter={() => handleMouseEnter(setDashboardDropdownOpen)}
-              onMouseLeave={() => handleMouseLeave(setDashboardDropdownOpen)}
-            >
-              <span
-                className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link dropdown-toggle`}
-                data-bs-toggle="dropdown"
-                style={{ cursor: "pointer" }}
-              >
-                {language === "ar" ? "لوحة التحكم" : "Dashboard"}
-              </span>
-              <ul className={`dropdown-menu ${styles.productNavDropdown} ${dashboardDropdownOpen ? "show" : ""}`}>
-                <li><Link to="/dashboard" className="dropdown-item">{language === "ar" ? "الرئيسية" : "Main"}</Link></li>
-                <li><Link to="/dashboard/manage-users" className="dropdown-item">{language === "ar" ? "إدارة المستخدمين" : "Manage Users"}</Link></li>
-                <li><Link to="/dashboard/edit-products" className="dropdown-item">{language === "ar" ? "تعديل المنتجات" : "Edit Products"}</Link></li>
-                <li><Link to="/dashboard/orders" className="dropdown-item">{language === "ar" ? "الطلبات" : "Orders"}</Link></li>
-                <li><Link to="/dashboard/products" className="dropdown-item">{language === "ar" ? "إدارة المنتجات" : "Admin Products"}</Link></li>
-              </ul>
-            </div>
-
-            {/* Language Dropdown */}
-            <div
-              ref={languageDropdownRef}
-              className={`dropdown ${styles.dropdownNav}`}
-              onMouseEnter={() => handleMouseEnter(setLanguageDropdownOpen)}
-              onMouseLeave={() => handleMouseLeave(setLanguageDropdownOpen)}
-            >
-              <span
-                className={`${styles.topNavbarLink} ${styles.topNavbarLinkHover} nav-link dropdown-toggle`}
-                data-bs-toggle="dropdown"
-                style={{ cursor: "pointer" }}
-              >
-                {language.toUpperCase()}
-              </span>
-              <ul className={`dropdown-menu ${styles.productNavDropdown} ${languageDropdownOpen ? "show" : ""}`}>
-                <li>
-                  <button className="dropdown-item" onClick={() => changeLanguage(oppositeLang)}>
-                    {oppositeLang.toUpperCase()}
-                  </button>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -232,7 +271,7 @@ const Navbar = () => {
               >
                 <span
                   className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
-                  onClick={handleProductsClick}
+                  onClick={() => handleDropdownClick('products')}
                   style={{ cursor: "pointer" }}
                 >
                   {language === "ar" ? "المنتجات" : "Products"}
@@ -243,7 +282,7 @@ const Navbar = () => {
                     <li key={key}>
                       <button
                         type="button"
-                        className={`${styles.productNavDropdownItem} ${styles.productNavDropdownItemHover} dropdown-item`}
+                        className={`dropdown-item ${styles.productNavDropdownItem}`}
                         onClick={() => handleCategoryNavigation(labelEn, key)}
                       >
                         {language === "ar" ? labelAr : labelEn}
@@ -252,6 +291,60 @@ const Navbar = () => {
                   ))}
                 </ul>
               </li>
+
+              {/* Dashboard Dropdown - Mobile Only */}
+             {isMobile && user && (user.role === "admin" || user.role === "seller") && (
+  <li
+    ref={dashboardDropdownRef}
+    className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
+  >
+    <span
+      className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
+      onClick={() => handleDropdownClick('dashboard')}
+      style={{ cursor: "pointer" }}
+    >
+      {language === "ar" ? "لوحة التحكم" : "Dashboard"}
+    </span>
+    <ul className={`dropdown-menu ${styles.dashboardDropdown} ${dashboardDropdownOpen ? "show" : ""}`}>
+      {user.role === "admin" && (
+        <>
+          <li><Link to="/dashboard" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "الرئيسية" : "Main"}</Link></li>
+          <li><Link to="/dashboard/manage-users" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "إدارة المستخدمين" : "Manage Users"}</Link></li>
+          <li><Link to="/dashboard/edit-products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "تعديل المنتجات" : "Edit Products"}</Link></li>
+          <li><Link to="/dashboard/orders" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "الطلبات" : "Orders"}</Link></li>
+          <li><Link to="/dashboard/products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "إدارة المنتجات" : "Admin Products"}</Link></li>
+        </>
+      )}
+      {user.role === "seller" && (
+        <li><Link to="/dashboard/edit-products" className={`dropdown-item ${styles.dashboardDropdownItem}`} onClick={handleDashboardLinkClick}>{language === "ar" ? "تعديل المنتجات" : "Edit Products"}</Link></li>
+      )}
+    </ul>
+  </li>
+)}
+
+
+              {/* Language Dropdown - Mobile Only */}
+              {isMobile && (
+                <li
+                  ref={languageDropdownRef}
+                  className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
+                >
+                  <span
+                    className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
+                    onClick={() => handleDropdownClick('language')}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {language.toUpperCase()}
+                  </span>
+                  <ul className={`dropdown-menu ${styles.langDropdown} ${languageDropdownOpen ? "show" : ""}`}>
+                    <li>
+                      <button className={`dropdown-item ${styles.langDropdownItem}`} onClick={handleLanguageChange}>
+                        {oppositeLang.toUpperCase()}
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              )}
 
               <li className={`${styles.bottomNavbarNavItem} nav-item`}>
                 <Link to="/contact" className={`${styles.navLink} ${styles.navLinkHover} nav-link`}>

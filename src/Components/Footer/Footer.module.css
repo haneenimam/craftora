@@ -18,7 +18,7 @@
   margin: 0 auto;
 }
 
-/* Logo on the left (large screens) */
+
 .logoImage {
   width: 150px;
   height: 70px;
@@ -34,14 +34,14 @@
 
 
 
-/* Center content */
+
 .text-center {
   flex: 1 1 100%;
   width: 100%;
   text-align: center;
 }
 
-/* Contact row */
+
 .contact-row {
   display: flex;
   justify-content: center;
@@ -75,7 +75,7 @@
   color: #efeaeac4;
 }
 
-/* Keep contact icons color stable on touch devices (no hover) */
+
 @media (hover: none) and (pointer: coarse) {
   .contact-icons svg:hover {
     color: rgba(255, 255, 255, 0.95) !important;
@@ -83,7 +83,7 @@
   }
 }
 
-/* --- Responsive Adjustments --- */
+
 
 @media (max-width: 768px) {
   .custom-footer .container {

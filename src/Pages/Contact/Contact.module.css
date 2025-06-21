@@ -1,14 +1,13 @@
-/* Base styles unchanged */
 .contactContainer {
   max-width: 600px;
   margin: auto;
-  margin-bottom: 2rem; /* 👈 Added to move it up from the footer */
+  margin-bottom: 2rem;
   padding: 2rem;
   background: #fdfdfd;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   font-family: "Overpass", sans-serif;
-  box-sizing: border-box; /* added for safety */
+  box-sizing: border-box;
 }
 
 .contactTitle {
@@ -34,18 +33,11 @@
   border-radius: 8px;
   margin-bottom: 12px;
   background-color: white;
-
-  /* Desktop custom dropdown arrow */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
-  /* Add space for arrow */
   padding-right: 30px;
-
-  /* Custom arrow SVG */
-  background-image:
-    url("data:image/svg+xml;utf8,<svg fill='%23093866' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23093866' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px;
@@ -66,8 +58,8 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  width: 100%; /* full width button */
-  margin-top: 0; /* remove any extra margin */
+  width: 100%;
+  margin-top: 0;
 }
 
 .contactForm button:hover {
@@ -91,7 +83,6 @@
   font-size: 0.9rem;
 }
 
-/* Tablets and larger mobiles: use relative widths */
 @media (min-width: 600px) and (max-width: 1024px) {
   .contactContainer {
     max-width: none;
@@ -121,7 +112,6 @@
   }
 }
 
-/* Smaller tablets and mobiles */
 @media (max-width: 600px) {
   .contactContainer {
     width: 90vw;
@@ -139,13 +129,12 @@
     font-size: 0.95rem;
     padding: 6px 10px;
 
-    /* Restore native dropdown on mobile for better UX */
     appearance: menulist-button;
     -webkit-appearance: menulist-button;
     -moz-appearance: menulist-button;
 
-    background-image: none; /* remove custom arrow */
-    padding-right: 12px; /* reduce right padding */
+    background-image: none;
+    padding-right: 12px;
   }
 
   .contactForm button {
@@ -158,7 +147,6 @@
   }
 }
 
-/* Small mobile phones */
 @media (max-width: 480px) {
   .contactContainer {
     width: 95vw;
@@ -176,7 +164,6 @@
     font-size: 0.85rem;
     padding: 5px 8px;
 
-    /* Keep native dropdown on smallest screens too */
     appearance: menulist-button;
     -webkit-appearance: menulist-button;
     -moz-appearance: menulist-button;

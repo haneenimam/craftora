@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../Apis/config.js";
-import './ManageUsers.css';
+import styles from './ManageUsers.module.css';
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -19,8 +19,9 @@ function ManageUsers() {
       try {
         const response = await axiosInstance.get('/api/admin/users', {
           headers: {
-            'x-auth-token': localStorage.getItem('token')
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           }
+          
         });
         setUsers(response.data);
         setLoading(false);
@@ -53,16 +54,12 @@ function ManageUsers() {
     try {
       const response = await axiosInstance.patch(
         `/api/admin/users/${editingUser._id}`,
-        {
-          firstName: editedData.firstName,
-          lastName: editedData.lastName,
-          email: editedData.email,
-          role: editedData.role
-        },
+        editedData,
         {
           headers: {
-            'x-auth-token': localStorage.getItem('token')
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           }
+          
         }
       );
 
@@ -76,7 +73,6 @@ function ManageUsers() {
     }
   };
 
-
   const handleDelete = async (userId) => {
     const confirmed = window.confirm("Are you sure you want to delete this user?");
     if (!confirmed) return;
@@ -84,8 +80,8 @@ function ManageUsers() {
     try {
       await axiosInstance.delete(`/api/admin/users/${userId}`, {
         headers: {
-          'x-auth-token': localStorage.getItem('token')
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }        
       });
       setUsers(users.filter(user => user._id !== userId));
     } catch (err) {
@@ -95,114 +91,121 @@ function ManageUsers() {
   };
 
   return (
-    <div className="manage-users-container mt-5">
-      <h2 className="mb-4">Manage Users</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {loading && <div className="alert alert-info">Loading users...</div>}
+    <div className={styles["manage-users-container"]}>
+      <h2>Manage Users</h2>
 
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user, index) => (
-              <tr key={user._id}>
-                <td>{index + 1}</td>
-                <td>
-                  {editingUser?._id === user._id ? (
-                    <input
-                      name="firstName"
-                      value={editedData.firstName}
-                      onChange={handleInputChange}
-                      className="form-control"
-                    />
-                  ) : (
-                    user.firstName
-                  )}
-                </td>
-                <td>
-                  {editingUser?._id === user._id ? (
-                    <input
-                      name="lastName"
-                      value={editedData.lastName}
-                      onChange={handleInputChange}
-                      className="form-control"
-                    />
-                  ) : (
-                    user.lastName
-                  )}
-                </td>
-                <td>
-                  {editingUser?._id === user._id ? (
-                    <input
-                      name="email"
-                      value={editedData.email}
-                      onChange={handleInputChange}
-                      className="form-control"
-                    />
-                  ) : (
-                    user.email
-                  )}
-                </td>
-                <td>
-                  {editingUser?._id === user._id ? (
-                    <select
-                      name="role"
-                      value={editedData.role}
-                      onChange={handleInputChange}
-                      className="form-select"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  ) : (
-                    user.role
-                  )}
-                </td>
-                <td>
-                  {editingUser?._id === user._id ? (
-                    <>
-                      <button className="btn btn-sm btn-success me-2" onClick={handleSave}>
-                        Save
-                      </button>
-                      <button className="btn btn-sm btn-secondary" onClick={() => setEditingUser(null)}>
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="btn btn-sm btn-warning me-2"
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDelete(user._id)}
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))
-          ) : (
+      {error && <div className={`alert alert-danger ${styles.alert}`}>{error}</div>}
+      {loading && <div className={`alert alert-info ${styles.alert}`}>Loading users...</div>}
+
+      <div className="table-responsive">
+        <table className={`table table-striped ${styles.table}`}>
+          <thead>
             <tr>
-              <td colSpan="6" className="text-center">No users found</td>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user._id}>
+                  <td>
+                    {editingUser?._id === user._id ? (
+                      <input
+                        name="firstName"
+                        value={editedData.firstName}
+                        onChange={handleInputChange}
+                        className={`form-control ${styles['form-control']}`}
+                      />
+                    ) : (
+                      user.firstName
+                    )}
+                  </td>
+                  <td>
+                    {editingUser?._id === user._id ? (
+                      <input
+                        name="lastName"
+                        value={editedData.lastName}
+                        onChange={handleInputChange}
+                        className={`form-control ${styles['form-control']}`}
+                      />
+                    ) : (
+                      user.lastName
+                    )}
+                  </td>
+                  <td>
+                    {editingUser?._id === user._id ? (
+                      <input
+                        name="email"
+                        value={editedData.email}
+                        onChange={handleInputChange}
+                        className={`form-control ${styles['form-control']}`}
+                      />
+                    ) : (
+                      user.email
+                    )}
+                  </td>
+                  <td>
+                    {editingUser?._id === user._id ? (
+                      <select
+                        name="role"
+                        value={editedData.role}
+                        onChange={handleInputChange}
+                        className={`form-select ${styles['form-select']}`}
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    ) : (
+                      user.role
+                    )}
+                  </td>
+                  <td>
+                    {editingUser?._id === user._id ? (
+                      <>
+                        <button
+                          className={`btn btn-sm me-2 ${styles['btn-success']}`}
+                          onClick={handleSave}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="btn btn-sm btn-secondary"
+                          onClick={() => setEditingUser(null)}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className={`btn btn-sm me-2 ${styles['btn-warning']}`}
+                          onClick={() => handleEditClick(user)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className={`btn btn-sm ${styles['btn-danger']}`}
+                          onClick={() => handleDelete(user._id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">No users found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

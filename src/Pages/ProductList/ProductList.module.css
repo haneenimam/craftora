@@ -68,11 +68,6 @@
 }
 
 
-
-
-
-
-/* Filters Container */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -83,8 +78,6 @@
   padding: 16px 24px;
 }
 
-
-/* Inputs and Select */
 .filterInput,
 .filterSelect {
   padding: 10px 14px;
@@ -94,26 +87,24 @@
   font-size: 14px;
   transition: border 0.3s;
   color: #004666 !important;
-  background-color: #efeaeae6 !important;
+  background-color: rgba(245, 248, 248, 0.9) !important;
   margin-top: 6px; 
   margin-bottom: 10px;
 }
 
-/* Custom Select Dropdown Options */
+
 .filterSelect option {
   color: #004666 !important;
   background-color: #efeaeae6 !important;
 }
 
-/* Option Hover */
+
 .filterSelect option:hover {
-  color: #004666 !important;         /* Keep the same text color */
+  color: #004666 !important;        
   background-color: #d1cbcb !important;
-  opacity: 0.9;                      /* Add opacity */
+  opacity: 0.9;                   
 }
 
-
-/* Slider Area */
 .sliderWrapper {
   display: flex;
   flex-direction: column;
@@ -122,7 +113,7 @@
   padding: 4px 0 0 0; 
 }
 
-/* Slider Styles */
+
 .sliderLabel {
   font-size: 14px;
   font-weight: 500;
@@ -135,7 +126,7 @@
   height: 6px;
   background: #ddd;
   border-radius: 4px;
-  margin-bottom: 2px; /* space below the slider */
+  margin-bottom: 2px; 
 }
 
 .track {
@@ -173,7 +164,7 @@
   position: relative;
   width: 200px;
   padding: 10px 14px;
-  background-color: #efeaeae6;
+  background-color: rgba(245, 248, 248, 0.9) !important;
   border: 1px solid #ccc;
   border-radius: 8px;
   cursor: pointer;
