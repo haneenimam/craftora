@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Login.module.css";
-import { useAuth } from "../../Context/Auth"; // context
+import { useAuth } from "../../Context/Auth";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -98,8 +99,9 @@ function Login() {
 
           <div className={styles.loginPrompt}>
             <small>
-              Don't have an account? <a href="/signup">Sign Up</a>
+              Don't have an account? <Link to="/signup">Sign Up</Link>
             </small>
+
           </div>
         </form>
       </div>

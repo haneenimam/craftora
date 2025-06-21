@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Signup.module.css";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ function Signup() {
               <label className={styles.formLabel}>First Name</label>
               <input
                 type="text"
-                          className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+                className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
 
                 value={firstName}
                 onChange={(e) => {
@@ -85,7 +86,7 @@ function Signup() {
               <label className={styles.formLabel}>Last Name</label>
               <input
                 type="text"
-                          className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+                className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
 
                 value={lastName}
                 onChange={(e) => {
@@ -103,7 +104,7 @@ function Signup() {
             <label className={styles.formLabel}>Email address</label>
             <input
               type="email"
-                       className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+              className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
 
               value={email}
               onChange={(e) => {
@@ -119,9 +120,8 @@ function Signup() {
           <div className="mb-3">
             <label className={styles.formLabel}>Role</label>
             <select
-              className={`form-select form-select-lg rounded-3 ${
-                errors.role ? "is-invalid" : ""
-              }`}
+              className={`form-select form-select-lg rounded-3 ${errors.role ? "is-invalid" : ""
+                }`}
               value={role}
               onChange={(e) => {
                 setRole(e.target.value);
@@ -141,7 +141,7 @@ function Signup() {
             <label className={styles.formLabel}>Password</label>
             <input
               type="password"
-                        className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+              className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
 
               value={password}
               onChange={(e) => {
@@ -158,7 +158,7 @@ function Signup() {
             <label className={styles.formLabel}>Confirm Password</label>
             <input
               type="password"
-                         className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
+              className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
 
               value={confirmPassword}
               onChange={(e) => {
@@ -180,7 +180,7 @@ function Signup() {
 
           <div className={styles.loginPrompt}>
             <small>
-              Already have an account? <a href="/login">Login</a>
+              Already have an account? <Link to="/login">Login</Link>
             </small>
           </div>
         </form>
