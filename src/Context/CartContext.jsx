@@ -70,10 +70,26 @@ export const CartProvider = ({ children }) => {
       .toFixed(2);
   };
 
-  return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, calculateTotal }}
-    >
+
+
+  
+const clearCart = () => {
+  setCart([]);
+};
+
+
+
+return (
+  <CartContext.Provider
+    value={{
+      cart,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      calculateTotal,
+      clearCart, 
+    }}
+>
       {children}
     </CartContext.Provider>
   );

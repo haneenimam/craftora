@@ -38,7 +38,7 @@ const egyptGovernorates = [
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { cart, updateQuantity, removeFromCart } = useCart();
+const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
   const { language } = useLanguage();
   const currency = language === "ar" ? "ج.م" : "EGP";
   const t = (en, ar) => (language === "ar" ? ar : en);
