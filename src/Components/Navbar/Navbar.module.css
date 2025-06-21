@@ -1,4 +1,3 @@
-
 :global(body) {
   background-color: #c7d5e1 !important;
   font-family: 'Josefin Sans', sans-serif;
@@ -28,6 +27,7 @@ textarea:focus {
 
 
 @media only screen and (max-width: 991.98px) {
+
   input,
   textarea {
     padding-right: 0.6rem;
@@ -170,7 +170,7 @@ textarea:focus {
     width: 100%;
   }
 
- 
+
   .mobile-only {
     display: block !important;
   }
@@ -346,12 +346,13 @@ textarea:focus {
   color: #004666 !important;
   text-align: center !important;
   transition: all 0.2s ease;
-  
+
 }
+
 .productNavDropdownItem:hover,
 .dashboardDropdownItem:hover,
 .langDropdownItem:hover {
-  background-color:#d1cbcb !important;
+  background-color: #d1cbcb !important;
 
 }
 
@@ -407,6 +408,76 @@ textarea:focus {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
+
+
+
+
+
+.profileDropdownMenu {
+  background-color: #efeaeae6 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  min-width: 160px !important;
+  color: #004666 !important;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.profileDropdownMenu.show {
+  display: block;
+}
+
+
+.logoutItem {
+  color: #004666 !important;
+
+}
+
+.logoutItem:hover {
+  background-color: #d1cbcb !important;
+  color: #004666 !important;
+
+}
+
+
+.userBox {
+  color: #dee5ea !important;
+  font-weight: 900;
+  border: none !important;
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.userBox:hover {
+  color: #bac1cc !important;
+}
+
+.userDropdownWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.userDropdownWrapper .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.userDropdownWrapper:hover .dropdown-menu {
+  display: block;
+}
+
+
+
+
 @media (min-width: 992px) {
   .logoImage:hover {
     transform: scale(1.05);
@@ -415,7 +486,7 @@ textarea:focus {
 }
 
 @media (max-width: 991.98px) {
- 
+
   .navLink:hover,
   .topNavbarLink:hover,
   .cartIcon:hover,
@@ -464,7 +535,7 @@ textarea:focus {
     font-size: 13px !important;
   }
 
-  
+
   .langDropdown {
     width: 60px !important;
     min-width: unset !important;
