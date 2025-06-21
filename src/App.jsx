@@ -69,6 +69,8 @@ const App = () => {
           <Route path="/cart" element={<LayoutWithNavbarFooter Component={Cart} />} />
           <Route path="/contact" element={<LayoutWithNavbarFooter Component={Contact} />} />
           <Route path="/category-products" element={<LayoutWithNavbarFooter Component={CategoryProducts} />} />
+          <Route path="/checkout" element={<LayoutWithNavbarFooter Component={Checkout} />} />
+
 
           {/* Auth Routes (Footer Only) */}
           <Route path="/login" element={<LayoutWithFooterOnly Component={Login} />} />
@@ -77,12 +79,6 @@ const App = () => {
           <Route path="/reset-password/:userId" element={<LayoutWithFooterOnly Component={ResetPassword} />} />
 
           {/* Protected Routes */}
-          <Route path="/checkout" element={
-            <ProtectedRoute allowedRoles={["Buyer", "Admin", "Seller"]}>
-              <LayoutWithNavbarFooter Component={Checkout} />
-            </ProtectedRoute>
-          } />
-
           <Route path="/dashboard" element={
             <ProtectedRoute allowedRoles={["Admin", "Seller", "Buyer"]}>
               <LayoutWithNavbarFooter Component={Dashboard} />
