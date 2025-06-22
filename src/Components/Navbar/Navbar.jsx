@@ -4,7 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../Context/LanguageContext";
 import { useCart } from "../../Context/CartContext";
-import { useAuth } from "../../Context/Auth";  
+import { useAuth } from "../../Context/Auth";
 
 const categoryMap = {
   jewelry: "Jewelry",
@@ -156,7 +156,7 @@ const Navbar = () => {
               <img src="/logo.jpg" alt="LocalMarket Logo" className={styles.logoImage} />
             </Link>
           </div>
-  
+
           <div className="d-flex align-items-center gap-3">
             <Link to="/cart" className={`${styles.cartIcon} ${styles.cartIconHover} position-relative`}>
               <FaShoppingCart size={22} />
@@ -166,8 +166,8 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-  
-       
+
+
             {user ? (
               <div
                 className={`dropdown ${styles.userDropdownWrapper}`}
@@ -204,8 +204,34 @@ const Navbar = () => {
                 </Link>
               </>
             )}
-  
-          
+
+            <div
+              ref={languageDropdownRef}
+              className={`dropdown ${styles.langDropdownWrapper}`}
+              onMouseEnter={() => handleMouseEnter(setLanguageDropdownOpen)}
+              onMouseLeave={() => handleMouseLeave(setLanguageDropdownOpen)}
+            >
+              <button
+                className={`btn btn-sm dropdown-toggle ${styles.langBox}`}
+                type="button"
+                onClick={() => handleDropdownClick("language")}
+              >
+                {language.toUpperCase()}
+              </button>
+              <ul className={`dropdown-menu ${styles.langDropdown} ${languageDropdownOpen ? "show" : ""}`}>
+                <li>
+                  <button
+                    className={`dropdown-item ${styles.langDropdownItem}`}
+                    onClick={handleLanguageChange}
+                  >
+                    {oppositeLang.toUpperCase()}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+
+
             {!isMobile && user && (user.role === "admin" || user.role === "seller") && (
               <div
                 ref={dashboardDropdownRef}
@@ -239,8 +265,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-  
-     
+
+
       <nav className={`navbar navbar-expand-lg ${styles.bottomNavbar}`}>
         <div className="container">
           <button
@@ -254,7 +280,7 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-  
+
           <div className="collapse navbar-collapse" id="bottomNavbar">
             <ul className={`navbar-nav me-auto mb-2 mb-lg-0 ${styles.bottomNavbarNav}`}>
               <li className={`nav-item ${styles.bottomNavbarNavItem}`}>
@@ -262,8 +288,8 @@ const Navbar = () => {
                   {language === "ar" ? "الرئيسية" : "Home"}
                 </Link>
               </li>
-  
-             
+
+
               <li
                 ref={productsDropdownRef}
                 className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
@@ -277,7 +303,7 @@ const Navbar = () => {
                 >
                   {language === "ar" ? "المنتجات" : "Products"}
                 </span>
-  
+
                 <ul className={`dropdown-menu ${styles.productNavDropdown} ${productsDropdownOpen ? "show" : ""}`}>
                   {categories.map(({ key, labelEn, labelAr }) => (
                     <li key={key}>
@@ -292,8 +318,8 @@ const Navbar = () => {
                   ))}
                 </ul>
               </li>
-  
-         
+
+
               {isMobile && user && (user.role === "admin" || user.role === "seller") && (
                 <li ref={dashboardDropdownRef} className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}>
                   <span
@@ -319,8 +345,8 @@ const Navbar = () => {
                   </ul>
                 </li>
               )}
-  
-            
+
+
               {isMobile && (
                 <li ref={languageDropdownRef} className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}>
                   <span
@@ -339,7 +365,7 @@ const Navbar = () => {
                   </ul>
                 </li>
               )}
-  
+
               <li className={`nav-item ${styles.bottomNavbarNavItem}`}>
                 <Link to="/contact" className={`nav-link ${styles.navLink} ${styles.navLinkHover}`}>
                   {language === "ar" ? "تواصل معنا" : "Contact Us"}
@@ -351,7 +377,7 @@ const Navbar = () => {
       </nav>
     </header>
   );
-  
+
 };
 
 export default Navbar;

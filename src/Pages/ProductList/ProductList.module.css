@@ -11,6 +11,8 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
   width: 100%;
+  justify-items: center;
+  align-items: start;
 }
 
 @media (max-width: 400px) {
@@ -20,6 +22,7 @@
 
   .grid {
     gap: 15px;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -74,7 +77,7 @@
   gap: 14px;
   margin-bottom: 24px;
   justify-content: flex-end;
-  align-items: flex-start; 
+  align-items: flex-start;
   padding: 16px 24px;
 }
 
@@ -88,7 +91,7 @@
   transition: border 0.3s;
   color: #004666 !important;
   background-color: rgba(245, 248, 248, 0.9) !important;
-  margin-top: 6px; 
+  margin-top: 6px;
   margin-bottom: 10px;
 }
 
@@ -100,9 +103,9 @@
 
 
 .filterSelect option:hover {
-  color: #004666 !important;        
+  color: #004666 !important;
   background-color: #d1cbcb !important;
-  opacity: 0.9;                   
+  opacity: 0.9;
 }
 
 .sliderWrapper {
@@ -110,7 +113,7 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 240px;
-  padding: 4px 0 0 0; 
+  padding: 4px 0 0 0;
 }
 
 
@@ -118,7 +121,7 @@
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 8px;
-  color: #093866 ;
+  color: #093866;
 }
 
 .dualSlider {
@@ -126,7 +129,7 @@
   height: 6px;
   background: #ddd;
   border-radius: 4px;
-  margin-bottom: 2px; 
+  margin-bottom: 2px;
 }
 
 .track {
@@ -156,7 +159,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 2px; 
+  margin-top: 2px;
 }
 
 

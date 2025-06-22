@@ -4,11 +4,11 @@ import axiosInstance from "../../../Apis/config.js";
 import styles from "./EditProducts.module.css";
 
 const categories = [
-  { key: "jewelry", image: "jewelry.jpeg" },
-  { key: "crochet", image: "crochet.jpeg" },
-  { key: "candles", image: "candles.jpeg" },
-  { key: "ceramic", image: "ceramic.jpeg" },
-  { key: "home_essential", image: "homeess.jpeg" },
+  { key: "Jewelry", image: "jewelry.jpeg" },
+  { key: "Crochet", image: "crochet.jpeg" },
+  { key: "Candles", image: "candles.jpeg" },
+  { key: "Ceramic", image: "ceramic.jpeg" },
+  { key: "Home essential", image: "homeess.jpeg" },
 ];
 
 function ProductsPage() {
@@ -41,8 +41,8 @@ function ProductsPage() {
       const fetchedProducts = Array.isArray(data.products)
         ? data.products
         : Array.isArray(data)
-        ? data
-        : [];
+          ? data
+          : [];
 
       setProducts(fetchedProducts);
       setHasMore(fetchedProducts.length === 20);
@@ -61,6 +61,8 @@ function ProductsPage() {
         const payload = {
           ...newProduct,
           title: newProduct.name,
+            images: newProduct.image ? [newProduct.image] : [], 
+
         };
 
         const res = await axiosInstance.post("/api/products", payload, {
@@ -86,10 +88,15 @@ function ProductsPage() {
     }
   };
 
-  const handleEdit = (index) => {
-    setNewProduct(products[index]);
-    setEditIndex(index);
-  };
+const handleEdit = (index) => {
+  const p = products[index];
+  setNewProduct({
+    ...p,
+    image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : "",
+  });
+  setEditIndex(index);
+};
+
 
   const handleUpdate = async () => {
     const token = localStorage.getItem("token");
@@ -99,6 +106,8 @@ function ProductsPage() {
       const payload = {
         ...newProduct,
         title: newProduct.name,
+          images: newProduct.image ? [newProduct.image] : [], 
+
       };
 
       const res = await axiosInstance.put(
@@ -248,14 +257,16 @@ function ProductsPage() {
                 <td>{p.category}</td>
                 <td>{p.stock}</td>
                 <td>
-                  {p.image && (
+                  {Array.isArray(p.images) && p.images.length > 0 ? (
                     <img
-                      src={p.image}
+                      src={p.images[0]}
                       alt={p.name}
                       width="50"
                       height="50"
                       style={{ objectFit: "cover" }}
                     />
+                  ) : (
+                    "No Image"
                   )}
                 </td>
                 <td>

@@ -226,6 +226,29 @@ textarea:focus {
 }
 
 
+
+
+
+
+
+.langBox {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: rgba(245, 248, 248, 0.9) !important; 
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.langBox:hover {
+  color: #efeaeac4 !important;
+  cursor: pointer;
+}
+
+
+
+
+
+
 .productNavDropdown,
 .dashboardDropdown,
 .langDropdown {
@@ -327,7 +350,7 @@ textarea:focus {
 }
 
 
-.langSelectorWrapper .langDropdown {
+.langSelectorWrapper .langBox {
   width: 60px !important;
   min-width: unset !important;
   padding: 0.25rem 0 !important;

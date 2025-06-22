@@ -39,21 +39,30 @@ function AdminView() {
         console.error("Error fetching products:", err);
       });
   }, [page]);
+const handleDelete = (id) => {
+  if (window.confirm("Are you sure you want to delete this product?")) {
+    const token = localStorage.getItem("token");
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      axiosInstance
-        .delete(`/api/products/${id}`)
-        .then(() => {
-          setProducts((prev) => prev.filter((product) => product._id !== id));
-          if (editId === id) setEditId(null); 
-        })
-        .catch((err) => {
-          console.error("Failed to delete product:", err);
+    axiosInstance
+      .delete(`/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        setProducts((prev) => prev.filter((product) => product._id !== id));
+        if (editId === id) setEditId(null);
+      })
+      .catch((err) => {
+        console.error("Failed to delete product:", err);
+        if (err.response?.status === 401) {
+          alert("Unauthorized: Please login as Admin or Seller.");
+        } else {
           alert("Error deleting product");
-        });
-    }
-  };
+        }
+      });
+  }
+};
 
   const handleEdit = (product) => {
     setEditId(product._id);

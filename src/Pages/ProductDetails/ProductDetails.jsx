@@ -90,7 +90,7 @@ const ProductDetails = () => {
 
         <div className={`${styles["product-info"]} col-md-6`}>
           <h2 className={styles["product-title"]}>
-            {product.title || "Unnamed Product"}
+            {product.name || "Unnamed Product"}
           </h2>
 
           <div className={styles.priceContainer}>

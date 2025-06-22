@@ -16,7 +16,7 @@ const ProductList = () => {
   const initialCategory = params.get("category") || "";
   const initialSearch = params.get("search") || "";
   const initialMinPrice = parseInt(params.get("minPrice")) || 0;
-  const initialMaxPrice = parseInt(params.get("maxPrice")) || 1000;
+  const initialMaxPrice = parseInt(params.get("maxPrice")) || 2000;
 
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -32,7 +32,7 @@ const ProductList = () => {
 
   const categories = isArabic
     ? ["كل المنتجات", "إكسسوارات", "شموع", "كروشيه", "سيراميك", "الاحتياجات المنزلية"]
-    : ["All Products", "Jewelry", "Candles", "Crochet", "Ceramics", "Home Essentials"];
+    : ["All Products", "Jewelry", "Candles", "Crochet", "Ceramics", "Home Essential"];
 
   const translatedCategory = (eng) => {
     const map = {
@@ -41,7 +41,7 @@ const ProductList = () => {
       Candles: "شموع",
       Crochet: "كروشيه",
       Ceramics: "سيراميك",
-      "Home Essentials": "الاحتياجات المنزلية",
+      "Home Essential": "الاحتياجات المنزلية",
     };
     return isArabic ? map[eng] || eng : eng;
   };

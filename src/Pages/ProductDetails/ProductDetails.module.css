@@ -67,6 +67,7 @@ html, body {
   font-size: 42px;
   margin-bottom: 0.8rem;
   color: #093866;
+  text-align: left;
 }
 
 .priceContainer {

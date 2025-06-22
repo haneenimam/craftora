@@ -7,14 +7,16 @@
   border: 1px solid #ddd;
   border-radius: 12px;
   overflow: hidden;
-  padding: 12px;
-  height: 435px; 
+  padding: 20px; 
+  height: 480px; 
   box-sizing: border-box;
   transition: transform 0.3s;
-  min-width: 250px;
-  margin-bottom: 20px;
+  min-width: 290px; 
+  max-width: 300px;
   width: auto;
+  margin-bottom: 20px; 
 }
+
 
 .card:hover {
   transform: scale(1.02);
