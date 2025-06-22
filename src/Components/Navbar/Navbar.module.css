@@ -431,7 +431,15 @@ textarea:focus {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.langHideOnMobile {
+  display: block;
+}
 
+@media (max-width: 991px) {
+  .langHideOnMobile {
+    display: none !important;
+  }
+}
 
 
 

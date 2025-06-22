@@ -205,12 +205,14 @@ const Navbar = () => {
               </>
             )}
 
+            {/* Language Dropdown (EN/AR Switch) */}
             <div
               ref={languageDropdownRef}
-              className={`dropdown ${styles.langDropdownWrapper}`}
+              className={`dropdown ${styles.langDropdownWrapper} ${styles.langHideOnMobile}`}
               onMouseEnter={() => handleMouseEnter(setLanguageDropdownOpen)}
               onMouseLeave={() => handleMouseLeave(setLanguageDropdownOpen)}
             >
+
               <button
                 className={`btn btn-sm dropdown-toggle ${styles.langBox}`}
                 type="button"
@@ -381,3 +383,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
