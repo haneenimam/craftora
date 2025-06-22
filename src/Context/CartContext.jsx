@@ -14,7 +14,7 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Add product or increase quantity (but not beyond stock)
+
   const addToCart = (product) => {
     const productId = product._id || product.id;
     const stock = product.inStock ?? product.instock ?? product.stock ?? Infinity;
@@ -38,14 +38,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Remove product from cart
   const removeFromCart = (productId) => {
     setCart((prevCart) =>
       prevCart.filter((product) => (product._id || product.id) !== productId)
     );
   };
 
-  // Update product quantity directly (respect stock limits)
   const updateQuantity = (productId, newQuantity) => {
     setCart((prevCart) =>
       prevCart.map((item) => {
@@ -59,7 +57,7 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // Calculate total price
+
   const calculateTotal = () => {
     return cart
       .reduce(

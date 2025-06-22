@@ -2,8 +2,8 @@
   padding: 30px 50px;
   background-color: #ffffff;
   box-sizing: border-box;
-  box-shadow: 0 0 15px #093866;
-  margin: 0 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  margin: 0 15px 25px 15px;
   border-radius: 12px;
   overflow-x: auto;
 }
@@ -52,34 +52,48 @@
 }
 
 .btn-warning {
-  background-color: #ffc107;
+  background-color: #093866;
   border: none;
-  color: #000;
+  color: rgba(245, 248, 248, 0.9) ;
 }
 
 .btn-warning:hover {
-  background-color: #e0a800;
+  background-color: #092a4d;
+  color: rgba(245, 248, 248, 0.9);
 }
 
 .btn-danger {
-  background-color: #dc3545;
+  background-color:#dc3545;
   border: none;
-  color: #fff;
+  color: rgba(245, 248, 248, 0.9) ;
 }
 
 .btn-danger:hover {
   background-color: #c82333;
+  color: rgba(245, 248, 248, 0.9) ;
 }
 
 .btn-success {
   background-color: #28a745;
   border: none;
-  color: #fff;
+  color: rgba(245, 248, 248, 0.9) ;
 }
 
 .btn-success:hover {
   background-color: #218838;
+  color: rgba(245, 248, 248, 0.9) ;
 }
+.btn-cancel {
+  background-color: grey; 
+  border: none;
+  color: rgba(245, 248, 248, 0.9);
+}
+
+.btn-cancel:hover {
+  background-color:#555;
+  color: rgba(245, 248, 248, 0.9);
+}
+
 
 .form-control,
 .form-select {

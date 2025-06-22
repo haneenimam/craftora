@@ -5,7 +5,6 @@ const LanguageContext = createContext();
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState('en');
 
-  // Update direction based on selected language
   useEffect(() => {
     document.dir = language === 'ar' ? 'rtl' : 'ltr';
   }, [language]);
@@ -21,5 +20,5 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
-// Custom hook
+
 export const useLanguage = () => useContext(LanguageContext);

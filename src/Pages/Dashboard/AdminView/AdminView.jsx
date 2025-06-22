@@ -46,7 +46,7 @@ function AdminView() {
         .delete(`/api/products/${id}`)
         .then(() => {
           setProducts((prev) => prev.filter((product) => product._id !== id));
-          if (editId === id) setEditId(null); // لو بتعدل نفس المنتج المحذوف نلغي التعديل
+          if (editId === id) setEditId(null); 
         })
         .catch((err) => {
           console.error("Failed to delete product:", err);
@@ -65,7 +65,7 @@ function AdminView() {
   };
 
   const handleSave = (id) => {
-    // هنا ممكن تبعت الطلب للسيرفر لتحديث المنتج في الداتا بيز
+
     axiosInstance
       .put(`/api/products/${id}`, editData)
       .then((res) => {
@@ -170,7 +170,7 @@ function AdminView() {
                       </button>
                       <button
                         onClick={handleCancel}
-                        className={`btn ${styles.btnWarning}`}
+                        className={`btn ${styles.btnCancel}`}
                       >
                         Cancel
                       </button>

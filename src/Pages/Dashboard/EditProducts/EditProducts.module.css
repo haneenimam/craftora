@@ -1,123 +1,10 @@
-/* .productsPage {
-  max-width: 800px;
-  margin-bottom: 20px;
-  background-color: #fdfdfd;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #012140;
-}
-
-.productsPage h2 {
-  font-weight: 700;
-  color: #093866;
-}
-
-.formSection {
-  background-color: #f8f9fa;
-  color: #093866
-}
-
-.inputControl {
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.btnWarning {
-  background-color: grey;
- border: none;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 6px;
-  padding: 6px 12px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btnWarning:hover {
-  background-color: #555;
-  color: white;
-}
-
-.tableCell {
-vertical-align: middle;
-  color: #093866 !important ;
-  font-weight: 500;
-}
-
-.tableHover tbody tr:hover {
-  background-color: #f1f1f1;
-}
-.customAddBtn {
-  background-color: #093866;
-  border: none;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 6px;
-  padding: 10px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.customAddBtn:hover {
-background-color: #092a4d;
-color: white;
-}
-
-.tableHead {
-  background-color: #093866 !important;
-}
-
-.tableHead th {
-  color: white !important;
-  background-color: #093866 !important;
-  border-bottom: 2px solid #06274e !important;
-}
-
-.tableStyle {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8 px rgba(9, 56, 102, 0.08);
-}
-.paginationWrapper {
-  margin-top: 1rem;
-}
-
-.paginationBtn {
-  background-color: #093866;
-  border: none;
-  color: white;
-    border-radius: 12px;
-  font-weight: 600;
-  font-size: 1.2rem;
-  padding: 8px 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.paginationBtn:hover:not(:disabled) {
-  background-color: #092a4d;
-  transform: scale(1.05);
-}
-
-.paginationBtn:disabled {
-  background-color: #cccccc;
-  color: #666;
-  cursor: not-allowed;
-}
-
-.pageNumber {
-  font-weight: bold;
-  color: #093866;
-  font-size: 1.1rem;
-} */
-
 .productsPage {
-
-width: auto;
+  width: auto;
   background-color: #fdfdfd;
   padding: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
   border-radius: 12px;
-  box-shadow: 0 0 15px #012140;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .productsPage h2 {
@@ -130,13 +17,22 @@ width: auto;
   color: #093866;
 }
 
-.inputControl {
+.inputControl,
+.formControl {
   border-radius: 8px;
   font-size: 16px;
 }
 
+
+.formControl:focus {
+  color: #093866 !important;
+  outline: none;
+  border-color: #093866;
+  box-shadow: 0 0 2px #093866;
+}
+
 .btnWarning {
-  background-color: grey;
+  background-color: #093866;
   border: none;
   color: #ffffff;
   font-weight: 600;
@@ -148,16 +44,16 @@ width: auto;
 }
 
 .btnWarning:hover {
-  background-color: #555;
+  background-color: #092a4d;
   color: white;
 }
 
 .tableCell {
- vertical-align: middle;
+  vertical-align: middle;
   color: #093866 !important;
   font-weight: 500;
-  white-space: normal;         /* 👈 مهم */
-  overflow-wrap: break-word;   /* أو word-break: break-word; */
+  white-space: normal;
+  overflow-wrap: break-word;
   word-break: break-word;
 }
 
@@ -200,7 +96,6 @@ width: auto;
   border-collapse: collapse;
 }
 
-/* Pagination */
 .paginationWrapper {
   margin-top: 20px;
   display: flex;
@@ -211,38 +106,36 @@ width: auto;
 }
 
 .paginationBtn {
-  background-color: #093866; /* أزرق داكن */
+  padding: 10px 20px;
+  background-color: #093866;
+  color: #fff;
   border: none;
-  color: white;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1.2rem;
-  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+
 }
 
 .paginationBtn:hover:not(:disabled) {
-  background-color: #072646; /* أزرق أغمق للـ hover */
-  transform: scale(1.05);
+  background-color: #07294a;
 }
 
 .paginationBtn:disabled {
-  background-color: #cccccc;
-  color: #666;
+  background-color: #ccc;
+  color: #093866;
   cursor: not-allowed;
 }
 
 .pageNumber {
+  font-size: 18px;
   font-weight: 600;
-  font-size: 1.1rem;
   color: #093866;
 }
 
-/* --- Responsive styles --- */
+/* Responsive */
 @media (max-width: 768px) {
   .productsPage {
-    margin:  0 15px 10px ;
+    margin: 0 15px 10px;
     padding: 15px 10px;
   }
 
@@ -275,7 +168,6 @@ width: auto;
     padding: 8px 5px;
   }
 
-  /* أزرار أكبر وأسهل للمس */
   .btnWarning,
   .customAddBtn {
     font-size: 1rem;
@@ -284,7 +176,6 @@ width: auto;
     border-radius: 10px;
   }
 
-  /* Pagination: ترتيب عمودي */
   .paginationWrapper {
     flex-direction: row;
   }

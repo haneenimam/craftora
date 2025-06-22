@@ -144,7 +144,7 @@ function ProductsPage() {
 
         <input
           type="text"
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Product Name"
           value={newProduct.name}
           onChange={(e) =>
@@ -154,7 +154,7 @@ function ProductsPage() {
 
         <input
           type="number"
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Price"
           value={newProduct.price}
           onChange={(e) =>
@@ -164,7 +164,7 @@ function ProductsPage() {
 
         <input
           type="text"
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Description"
           value={newProduct.description}
           onChange={(e) =>
@@ -173,7 +173,7 @@ function ProductsPage() {
         />
 
         <select
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           value={newProduct.category}
           onChange={(e) =>
             setNewProduct({ ...newProduct, category: e.target.value })
@@ -190,7 +190,7 @@ function ProductsPage() {
 
         <input
           type="number"
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Stock"
           min="0"
           value={newProduct.stock}
@@ -201,7 +201,7 @@ function ProductsPage() {
 
         <input
           type="text"
-          className="form-control mb-2"
+          className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Image URL"
           value={newProduct.image}
           onChange={(e) =>

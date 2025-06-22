@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +9,6 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
 
 .product-details {
   font-family: 'Josefin Sans', 'Overpass', sans-serif;
@@ -139,7 +137,6 @@ html, body {
   padding: 2rem;
 }
 
-
 .quantity-control {
   display: flex;
   align-items: center;
@@ -170,7 +167,6 @@ html, body {
   background-color: #04213f;
 }
 
-
 .low-stock {
   color: #d8ba41;
   font-weight: bold;
@@ -181,7 +177,6 @@ html, body {
   font-style: italic;
 }
 
-
 .action-row {
   display: flex;
   align-items: center;
@@ -189,7 +184,6 @@ html, body {
   margin-top: 20px;
   flex-wrap: wrap;
 }
-
 
 @media (max-width: 767px) {
   .product-details-flex {
@@ -207,10 +201,11 @@ html, body {
     margin-right: 0;
   }
 
+  /* ✅ Updated image styling */
   .product-image img {
-    width: 90%;
-    max-width: 350px;
-    margin-left: 75px;
+    width: 100%;
+    max-width: 250px;
+    margin-left: 0;
   }
 
   .product-info {
@@ -285,7 +280,6 @@ html, body {
     font-size: 18px;
   }
 }
-
 
 .product-stock-status {
   margin-top: 0.5rem;

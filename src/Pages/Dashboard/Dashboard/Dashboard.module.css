@@ -7,7 +7,7 @@
   margin: 0 15px 15px 15px; 
   box-sizing: border-box;
   border-radius: 12px;
-  box-shadow: 0 0 15px #093866;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .dashboardHeader {
@@ -51,18 +51,18 @@
   padding: 10px 20px;
   font-weight: 500;
   background-color: #093866;
-  color: white;
+  color: rgba(245, 248, 248, 0.9) ;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btnLogout:hover {
-  background-color: #dc3545;
-  color: white;
+  background-color:#092a4d;
+  color: rgba(245, 248, 248, 0.9) ;
 }
 
-/* --- responsive styles --- */
+
 @media (max-width: 768px) {
   .dashboardContainer {
     padding: 20px 15px;
@@ -84,7 +84,7 @@
     text-align: center;
   }
 
-  /* تحويل الجدول لبطاقات للعرض الجوال */
+
   .table thead {
     display: none;
   }

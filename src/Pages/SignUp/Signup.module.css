@@ -1,4 +1,4 @@
-/* Signup.module.css */
+
 .signupContainer {
   min-height: 100vh;
   display: flex;
@@ -14,7 +14,7 @@
   padding: 30px;
   border-radius: 16px;
   background-color: #ffffff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s ease-in-out;
 }
 
@@ -31,6 +31,7 @@ h2 {
   font-weight: 500;
 }
 
+
 .formControl {
   padding: 10px 8px;
   border-radius: 8px;
@@ -40,11 +41,45 @@ h2 {
 }
 
 .formControl:focus {
-color: #093866 !important;
+  color: #093866 !important;
   outline: none;
   border-color: #093866;
-  box-shadow: 0 0 2px #093866;
+  box-shadow: 0 0 2px #093866;
+  
 }
+.form-select-lg:focus{
+  padding: 10px 8px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+    color: #093866;
+
+}
+.selectControl {
+  width: 100%;
+  padding: 15px 8px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  transition: all 0.3s ease;
+  color: #093866;
+  background-color: #fff;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1rem;
+}
+
+.selectControl:focus {
+  color: #093866 !important;
+  outline: none;
+  border-color: #093866;
+  box-shadow: 0 0 2px #093866;
+
+
+}
+
+.invalidInput {
+  border: 1px solid #dc3545 !important;
+}
+
 
 .customSignupBtn {
   background-color: #093866 !important;
@@ -91,7 +126,7 @@ color: #093866 !important;
   margin-top: 0.25rem;
 }
 
-/* Media Queries للتجاوب */
+
 @media (max-width: 768px) {
   .signupCard {
     padding: 25px;

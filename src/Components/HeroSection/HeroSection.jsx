@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './HeroSection.module.css';
-import { Link } from 'react-router-dom';
 import { useLanguage } from '../../Context/LanguageContext';
 
 const HeroSection = () => {

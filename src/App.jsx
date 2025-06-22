@@ -6,7 +6,7 @@ import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import "./index.css";
 
-// Lazy-loaded pages
+
 const Home = lazy(() => import("./Pages/Home/Home"));
 const ProductList = lazy(() => import("./Pages/ProductList/ProductList"));
 const ProductDetails = lazy(() => import("./Pages/ProductDetails/ProductDetails"));
@@ -26,7 +26,7 @@ const ResetPassword = lazy(() => import("./Pages/ResetPassword/ResetPassword"));
 const Unauthorized = lazy(() => import("./Pages/Unauthorized"));
 const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
 
-// Layouts
+
 const LayoutWithNavbarFooter = ({ Component }) => (
   <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
     <Navbar />

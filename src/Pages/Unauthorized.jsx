@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Unauthorized.module.css"; // هننشئ ده كمان
+import styles from "./Unauthorized.module.css"; 
 
 const Unauthorized = ({ language = "en" }) => {
   return (

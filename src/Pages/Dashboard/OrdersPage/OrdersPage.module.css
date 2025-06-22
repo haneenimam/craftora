@@ -3,9 +3,8 @@
   background-color: #fdfdfd;
   padding: 20px;
   margin: 0 15px 15px 15px;  
-  
   border-radius: 12px;
-  box-shadow: 0 0 15px #012140;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .ordersPageContainer h2 {
@@ -45,7 +44,7 @@
   background-color: #e9ecef;
 }
 
-/* تصفيف المنتجات مع الكميات */
+
 .productItem {
   margin-bottom: 6px;
   text-align: left;
@@ -59,7 +58,7 @@
   margin-left: 6px;
 }
 
-/* === Responsive Table === */
+
 @media (max-width: 768px) {
   .ordersPageContainer {
     padding: 15px;
@@ -98,7 +97,7 @@
     direction: ltr;
   }
 
-  /* لضبط تصفيف المنتج والكمية في الموبايل */
+
   .productItem {
     margin-bottom: 4px;
   }

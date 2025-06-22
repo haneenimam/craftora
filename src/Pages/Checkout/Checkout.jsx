@@ -135,24 +135,26 @@ const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
       case "governorate":
         if (!value) return t("Governorate is required", "المحافظة مطلوبة");
         return "";
+        case "postalCode":
+          if (value.trim() && !/^[0-9٠-٩]{4,5}$/.test(value))
+            return t(
+              "Postal code must be 4 or 5 digits",
+              "الرمز البريدي يجب أن يكون ٤ أو ٥ أرقام"
 
-      case "postalCode":
-        if (value.trim() && !/^\d{4,5}$/.test(value))
-          return t(
-            "Postal code must be 4 or 5 digits",
-            "الرمز البريدي يجب أن يكون 4 أو 5 أرقام"
-          );
-        return "";
+            );
+          return "";
+        
+        case "phone":
+          if (!value.trim())
+            return t("Phone number is required", "رقم الهاتف مطلوب");
+          if (!/^(010|011|012|015|٠١٠|٠١١|٠١٢|٠١٥)[0-9٠-٩]{8}$/.test(value))
+            return t(
+              "Phone must start with 010, 011, 012, or 015 and be 11 digits long",
+              "رقم الهاتف يجب أن يبدأ بـ ٠١٠ أو ٠١١ أو ٠١٢ أو ٠١٥ ويكون ١١ رقمًا"
 
-      case "phone":
-        if (!value.trim())
-          return t("Phone number is required", "رقم الهاتف مطلوب");
-        if (!/^(010|011|012|015)[0-9]{8}$/.test(value))
-          return t(
-            "Phone must start with 010, 011, 012, or 015 and be 11 digits long",
-            "رقم الهاتف يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015 ويكون 11 رقمًا"
-          );
-        return "";
+            );
+          return "";
+        
 
       case "country":
         if (!value.trim()) return t("Country is required", "الدولة مطلوبة");

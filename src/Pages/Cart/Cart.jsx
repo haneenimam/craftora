@@ -13,10 +13,10 @@ const CartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Read the last full URL (with query) from localStorage
+
   const lastShoppingPage = localStorage.getItem("lastShoppingPage") || "/product-list";
 
-  // ✅ Determine where the user came from, fallback to the lastShoppingPage
+ 
   const from = location.state?.from;
   const previousPage = !from || from === "/checkout" || from === "/cart" ? lastShoppingPage : from;
 

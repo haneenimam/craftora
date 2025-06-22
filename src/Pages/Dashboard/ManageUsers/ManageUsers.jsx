@@ -1,33 +1,32 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../Apis/config.js";
-import styles from './ManageUsers.module.css';
+import styles from "./ManageUsers.module.css";
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState(null);
   const [editedData, setEditedData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
   });
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axiosInstance.get('/api/admin/users', {
+        const response = await axiosInstance.get("/api/admin/users", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-          
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
         setUsers(response.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching users:', err);
-        setError(err.response?.data?.error || 'Failed to load users');
+        console.error("Error fetching users:", err);
+        setError(err.response?.data?.error || "Failed to load users");
         setLoading(false);
       }
     };
@@ -41,13 +40,13 @@ function ManageUsers() {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      role: user.role
+      role: user.role,
     });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedData(prev => ({ ...prev, [name]: value }));
+    setEditedData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = async () => {
@@ -57,36 +56,39 @@ function ManageUsers() {
         editedData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-          
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
-      setUsers(users.map(user =>
-        user._id === editingUser._id ? response.data : user
-      ));
+      setUsers(
+        users.map((user) =>
+          user._id === editingUser._id ? response.data : user
+        )
+      );
       setEditingUser(null);
     } catch (err) {
-      console.error('Error updating user:', err);
-      setError(err.response?.data?.error || 'Failed to update user');
+      console.error("Error updating user:", err);
+      setError(err.response?.data?.error || "Failed to update user");
     }
   };
 
   const handleDelete = async (userId) => {
-    const confirmed = window.confirm("Are you sure you want to delete this user?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
     if (!confirmed) return;
 
     try {
       await axiosInstance.delete(`/api/admin/users/${userId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }        
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      setUsers(users.filter(user => user._id !== userId));
+      setUsers(users.filter((user) => user._id !== userId));
     } catch (err) {
-      console.error('Error deleting user:', err);
-      setError(err.response?.data?.error || 'Failed to delete user');
+      console.error("Error deleting user:", err);
+      setError(err.response?.data?.error || "Failed to delete user");
     }
   };
 
@@ -94,8 +96,14 @@ function ManageUsers() {
     <div className={styles["manage-users-container"]}>
       <h2>Manage Users</h2>
 
-      {error && <div className={`alert alert-danger ${styles.alert}`}>{error}</div>}
-      {loading && <div className={`alert alert-info ${styles.alert}`}>Loading users...</div>}
+      {error && (
+        <div className={`alert alert-danger ${styles.alert}`}>{error}</div>
+      )}
+      {loading && (
+        <div className={`alert alert-info ${styles.alert}`}>
+          Loading users...
+        </div>
+      )}
 
       <div className="table-responsive">
         <table className={`table table-striped ${styles.table}`}>
@@ -118,7 +126,7 @@ function ManageUsers() {
                         name="firstName"
                         value={editedData.firstName}
                         onChange={handleInputChange}
-                        className={`form-control ${styles['form-control']}`}
+                        className={`form-control ${styles["form-control"]}`}
                       />
                     ) : (
                       user.firstName
@@ -130,7 +138,7 @@ function ManageUsers() {
                         name="lastName"
                         value={editedData.lastName}
                         onChange={handleInputChange}
-                        className={`form-control ${styles['form-control']}`}
+                        className={`form-control ${styles["form-control"]}`}
                       />
                     ) : (
                       user.lastName
@@ -142,7 +150,7 @@ function ManageUsers() {
                         name="email"
                         value={editedData.email}
                         onChange={handleInputChange}
-                        className={`form-control ${styles['form-control']}`}
+                        className={`form-control ${styles["form-control"]}`}
                       />
                     ) : (
                       user.email
@@ -154,7 +162,7 @@ function ManageUsers() {
                         name="role"
                         value={editedData.role}
                         onChange={handleInputChange}
-                        className={`form-select ${styles['form-select']}`}
+                        className={`form-select ${styles["form-select"]}`}
                       >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
@@ -167,13 +175,13 @@ function ManageUsers() {
                     {editingUser?._id === user._id ? (
                       <>
                         <button
-                          className={`btn btn-sm me-2 ${styles['btn-success']}`}
+                          className={`btn btn-sm me-2 ${styles["btn-success"]}`}
                           onClick={handleSave}
                         >
                           Save
                         </button>
                         <button
-                          className="btn btn-sm btn-secondary"
+                          className={`btn btn-sm ${styles["btn-cancel"]}`}
                           onClick={() => setEditingUser(null)}
                         >
                           Cancel
@@ -182,13 +190,13 @@ function ManageUsers() {
                     ) : (
                       <>
                         <button
-                          className={`btn btn-sm me-2 ${styles['btn-warning']}`}
+                          className={`btn btn-sm me-2 ${styles["btn-warning"]}`}
                           onClick={() => handleEditClick(user)}
                         >
                           Edit
                         </button>
                         <button
-                          className={`btn btn-sm ${styles['btn-danger']}`}
+                          className={`btn btn-sm ${styles["btn-danger"]}`}
                           onClick={() => handleDelete(user._id)}
                         >
                           Delete
@@ -200,7 +208,9 @@ function ManageUsers() {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center">No users found</td>
+                <td colSpan="5" className="text-center">
+                  No users found
+                </td>
               </tr>
             )}
           </tbody>

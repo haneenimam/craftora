@@ -70,8 +70,7 @@ function Signup() {
               <label className={styles.formLabel}>First Name</label>
               <input
                 type="text"
-                className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
-
+                className={`${styles.formControl} ${errors.firstName ? styles.invalidInput : ""}`}
                 value={firstName}
                 onChange={(e) => {
                   setFirstName(e.target.value);
@@ -79,15 +78,14 @@ function Signup() {
                 }}
               />
               {errors.firstName && (
-                <div className="invalid-feedback">{errors.firstName}</div>
+                <div className="invalid-feedback d-block">{errors.firstName}</div>
               )}
             </div>
             <div className="col-md-6 mb-3">
               <label className={styles.formLabel}>Last Name</label>
               <input
                 type="text"
-                className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
-
+                className={`${styles.formControl} ${errors.lastName ? styles.invalidInput : ""}`}
                 value={lastName}
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -95,7 +93,7 @@ function Signup() {
                 }}
               />
               {errors.lastName && (
-                <div className="invalid-feedback">{errors.lastName}</div>
+                <div className="invalid-feedback d-block">{errors.lastName}</div>
               )}
             </div>
           </div>
@@ -105,7 +103,6 @@ function Signup() {
             <input
               type="email"
               className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
-
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -113,15 +110,14 @@ function Signup() {
               }}
             />
             {errors.email && (
-              <div className="invalid-feedback">{errors.email}</div>
+              <div className="invalid-feedback d-block">{errors.email}</div>
             )}
           </div>
 
           <div className="mb-3">
             <label className={styles.formLabel}>Role</label>
             <select
-              className={`form-select form-select-lg rounded-3 ${errors.role ? "is-invalid" : ""
-                }`}
+              className={`form-select form-select-lg rounded-3 ${errors.role ? "is-invalid" : ""}`}
               value={role}
               onChange={(e) => {
                 setRole(e.target.value);
@@ -133,7 +129,7 @@ function Signup() {
               <option value="Admin">Admin</option>
             </select>
             {errors.role && (
-              <div className="invalid-feedback">{errors.role}</div>
+              <div className="invalid-feedback d-block">{errors.role}</div>
             )}
           </div>
 
@@ -141,8 +137,7 @@ function Signup() {
             <label className={styles.formLabel}>Password</label>
             <input
               type="password"
-              className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
-
+              className={`${styles.formControl} ${errors.password ? styles.invalidInput : ""}`}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -150,7 +145,7 @@ function Signup() {
               }}
             />
             {errors.password && (
-              <div className="invalid-feedback">{errors.password}</div>
+              <div className="invalid-feedback d-block">{errors.password}</div>
             )}
           </div>
 
@@ -158,8 +153,7 @@ function Signup() {
             <label className={styles.formLabel}>Confirm Password</label>
             <input
               type="password"
-              className={`${styles.formControl} ${errors.email ? styles.invalidInput : ""}`}
-
+              className={`${styles.formControl} ${errors.confirmPassword ? styles.invalidInput : ""}`}
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
@@ -167,7 +161,7 @@ function Signup() {
               }}
             />
             {errors.confirmPassword && (
-              <div className="invalid-feedback">{errors.confirmPassword}</div>
+              <div className="invalid-feedback d-block">{errors.confirmPassword}</div>
             )}
           </div>
 

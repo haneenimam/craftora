@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Navbar.module.css";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../Context/LanguageContext";
 import { useCart } from "../../Context/CartContext";
-import { useAuth } from "../../Context/Auth";  // ← استيراد useAuth
+import { useAuth } from "../../Context/Auth";  
 
 const categoryMap = {
   jewelry: "Jewelry",
@@ -157,7 +156,7 @@ const Navbar = () => {
               <img src="/logo.jpg" alt="LocalMarket Logo" className={styles.logoImage} />
             </Link>
           </div>
-
+  
           <div className="d-flex align-items-center gap-3">
             <Link to="/cart" className={`${styles.cartIcon} ${styles.cartIconHover} position-relative`}>
               <FaShoppingCart size={22} />
@@ -167,8 +166,8 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-
-            {/* Auth Section */}
+  
+       
             {user ? (
               <div
                 className={`dropdown ${styles.userDropdownWrapper}`}
@@ -205,9 +204,8 @@ const Navbar = () => {
                 </Link>
               </>
             )}
-
-
-            {/* Dashboard and Language dropdowns - Desktop Only */}
+  
+          
             {!isMobile && user && (user.role === "admin" || user.role === "seller") && (
               <div
                 ref={dashboardDropdownRef}
@@ -238,12 +236,11 @@ const Navbar = () => {
                 </ul>
               </div>
             )}
-
           </div>
         </div>
       </div>
-
-      {/* Bottom Navbar */}
+  
+     
       <nav className={`navbar navbar-expand-lg ${styles.bottomNavbar}`}>
         <div className="container">
           <button
@@ -257,16 +254,16 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-
+  
           <div className="collapse navbar-collapse" id="bottomNavbar">
-            <ul className={`${styles.bottomNavbarNav} navbar-nav me-auto mb-2 mb-lg-0`}>
-              <li className={`${styles.bottomNavbarNavItem} nav-item`}>
-                <Link to="/" className={`${styles.navLink} ${styles.navLinkHover} nav-link`}>
+            <ul className={`navbar-nav me-auto mb-2 mb-lg-0 ${styles.bottomNavbarNav}`}>
+              <li className={`nav-item ${styles.bottomNavbarNavItem}`}>
+                <Link to="/" className={`nav-link ${styles.navLink} ${styles.navLinkHover}`}>
                   {language === "ar" ? "الرئيسية" : "Home"}
                 </Link>
               </li>
-
-              {/* Products Dropdown */}
+  
+             
               <li
                 ref={productsDropdownRef}
                 className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
@@ -274,13 +271,13 @@ const Navbar = () => {
                 onMouseLeave={() => handleMouseLeave(setProductsDropdownOpen)}
               >
                 <span
-                  className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
+                  className={`nav-link dropdown-toggle ${styles.navLink} ${styles.navLinkHover}`}
                   onClick={() => handleDropdownClick('products')}
                   style={{ cursor: "pointer" }}
                 >
                   {language === "ar" ? "المنتجات" : "Products"}
                 </span>
-
+  
                 <ul className={`dropdown-menu ${styles.productNavDropdown} ${productsDropdownOpen ? "show" : ""}`}>
                   {categories.map(({ key, labelEn, labelAr }) => (
                     <li key={key}>
@@ -295,15 +292,12 @@ const Navbar = () => {
                   ))}
                 </ul>
               </li>
-
-              {/* Dashboard Dropdown - Mobile Only */}
+  
+         
               {isMobile && user && (user.role === "admin" || user.role === "seller") && (
-                <li
-                  ref={dashboardDropdownRef}
-                  className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
-                >
+                <li ref={dashboardDropdownRef} className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}>
                   <span
-                    className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
+                    className={`nav-link dropdown-toggle ${styles.navLink} ${styles.navLinkHover}`}
                     onClick={() => handleDropdownClick('dashboard')}
                     style={{ cursor: "pointer" }}
                   >
@@ -325,16 +319,12 @@ const Navbar = () => {
                   </ul>
                 </li>
               )}
-
-
-              {/* Language Dropdown - Mobile Only */}
+  
+            
               {isMobile && (
-                <li
-                  ref={languageDropdownRef}
-                  className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}
-                >
+                <li ref={languageDropdownRef} className={`nav-item dropdown ${styles.bottomNavbarNavItem} ${styles.dropdownNav}`}>
                   <span
-                    className={`${styles.navLink} ${styles.navLinkHover} nav-link dropdown-toggle`}
+                    className={`nav-link dropdown-toggle ${styles.navLink} ${styles.navLinkHover}`}
                     onClick={() => handleDropdownClick('language')}
                     style={{ cursor: "pointer" }}
                   >
@@ -349,9 +339,9 @@ const Navbar = () => {
                   </ul>
                 </li>
               )}
-
-              <li className={`${styles.bottomNavbarNavItem} nav-item`}>
-                <Link to="/contact" className={`${styles.navLink} ${styles.navLinkHover} nav-link`}>
+  
+              <li className={`nav-item ${styles.bottomNavbarNavItem}`}>
+                <Link to="/contact" className={`nav-link ${styles.navLink} ${styles.navLinkHover}`}>
                   {language === "ar" ? "تواصل معنا" : "Contact Us"}
                 </Link>
               </li>
@@ -361,6 +351,7 @@ const Navbar = () => {
       </nav>
     </header>
   );
+  
 };
 
 export default Navbar;
