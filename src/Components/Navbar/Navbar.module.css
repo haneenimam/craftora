@@ -235,7 +235,7 @@ textarea:focus {
   padding: 5px 10px;
   border-radius: 5px;
   font-weight: 500;
-  color: rgba(245, 248, 248, 0.9) !important; 
+  color: rgba(245, 248, 248, 0.9) !important;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -304,6 +304,12 @@ textarea:focus {
   }
 }
 
+.topNavbarLink:hover,
+.topNavbarBrand:hover,
+.cartIcon:hover {
+  color: #efeaeac4 !important;
+  text-decoration: none;
+}
 
 @media (min-width: 992px) {
   .navLink:hover {
@@ -311,12 +317,7 @@ textarea:focus {
     text-decoration: none;
   }
 
-  .topNavbarLink:hover,
-  .topNavbarBrand:hover,
-  .cartIcon:hover {
-    color: #efeaeac4 !important;
-    text-decoration: none;
-  }
+
 
   .dropdownNav:hover .productNavDropdown,
   .dashboardDropdownWrapper:hover .dashboardDropdown,
@@ -518,17 +519,6 @@ textarea:focus {
 
 @media (max-width: 991.98px) {
 
-  .navLink:hover,
-  .topNavbarLink:hover,
-  .cartIcon:hover,
-  .topNavbarBrand:hover,
-  .productNavDropdownItem:hover,
-  .dashboardDropdownItem:hover,
-  .langDropdownItem:hover {
-    color: inherit !important;
-    background-color: transparent !important;
-    text-decoration: none !important;
-  }
 
 
   .productNavDropdown .dropdown-item {
