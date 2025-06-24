@@ -202,13 +202,11 @@ html, body {
     margin-right: 0;
   }
 
-  /* ✅ Updated image styling */
   .product-image img {
     width: 100%;
     max-width: 250px;
-    margin-left: 0;
+    margin-left: 55px; 
   }
-
   .product-info {
     padding-left: 0;
     text-align: center;

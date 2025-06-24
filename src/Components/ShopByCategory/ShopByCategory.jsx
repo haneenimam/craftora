@@ -11,7 +11,6 @@ const categories = [
   { key: "home_essentials", image: "homeess.jpeg" },
 ];
 
-
 const categoryNames = {
   en: {
     jewelry: "Jewelry",
@@ -28,7 +27,6 @@ const categoryNames = {
     home_essentials: "الاحتياجات المنزلية",
   },
 };
-
 
 const categoryMap = {
   jewelry: "Jewelry",
@@ -53,14 +51,17 @@ const ShopByCategory = () => {
 
   const handleShopNow = (categoryKey) => {
     const backendCategory = categoryMap[categoryKey] || categoryKey;
-    navigate(`/category-products?category=${encodeURIComponent(backendCategory)}`);
+    navigate(
+      `/category-products?category=${encodeURIComponent(backendCategory)}`
+    );
   };
 
   const title = language === "ar" ? "تسوق حسب الفئة" : "Shop by Category";
   const shopNowText = language === "ar" ? "تسوق الآن" : "Shop Now";
 
   const renderCard = (category, idx, cardSizeClass) => {
-    const translatedName = categoryNames[language]?.[category.key] || category.key;
+    const translatedName =
+      categoryNames[language]?.[category.key] || category.key;
 
     return (
       <div
@@ -93,11 +94,16 @@ const ShopByCategory = () => {
     );
   };
 
-
   if (isMobile) {
     return (
       <section className={styles["shop-by-category"]}>
-        <h2 className={styles["section-title"]}>{title}</h2>
+        <h2
+          className={`${styles["section-title"]} ${
+            language === "ar" ? styles["rtl-title"] : ""
+          }`}
+        >
+          {title}
+        </h2>
         <div className={styles["category-row"]}>
           {categories.map((category, idx) =>
             renderCard(category, idx, "mobile-card")
@@ -107,21 +113,26 @@ const ShopByCategory = () => {
     );
   }
 
-
   return (
     <section className={styles["shop-by-category"]}>
-      <h2 className={styles["section-title"]}>{title}</h2>
+      <h2
+        className={`${styles["section-title"]} ${
+          language === "ar" ? styles["rtl-title"] : ""
+        }`}
+      >
+        {title}
+      </h2>
 
       <div className={`${styles["category-row"]} ${styles["large-row"]}`}>
-        {categories.slice(0, 2).map((category, idx) =>
-          renderCard(category, idx, "large-card")
-        )}
+        {categories
+          .slice(0, 2)
+          .map((category, idx) => renderCard(category, idx, "large-card"))}
       </div>
 
       <div className={`${styles["category-row"]} ${styles["small-row"]}`}>
-        {categories.slice(2).map((category, idx) =>
-          renderCard(category, idx + 2, "small-card")
-        )}
+        {categories
+          .slice(2)
+          .map((category, idx) => renderCard(category, idx + 2, "small-card"))}
       </div>
     </section>
   );

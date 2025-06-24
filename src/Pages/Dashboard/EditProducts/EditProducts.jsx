@@ -41,8 +41,8 @@ function ProductsPage() {
       const fetchedProducts = Array.isArray(data.products)
         ? data.products
         : Array.isArray(data)
-          ? data
-          : [];
+        ? data
+        : [];
 
       setProducts(fetchedProducts);
       setHasMore(fetchedProducts.length === 20);
@@ -61,8 +61,7 @@ function ProductsPage() {
         const payload = {
           ...newProduct,
           title: newProduct.name,
-            images: newProduct.image ? [newProduct.image] : [], 
-
+          images: newProduct.image ? [newProduct.image] : [],
         };
 
         const res = await axiosInstance.post("/api/products", payload, {
@@ -88,15 +87,14 @@ function ProductsPage() {
     }
   };
 
-const handleEdit = (index) => {
-  const p = products[index];
-  setNewProduct({
-    ...p,
-    image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : "",
-  });
-  setEditIndex(index);
-};
-
+  const handleEdit = (index) => {
+    const p = products[index];
+    setNewProduct({
+      ...p,
+      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : "",
+    });
+    setEditIndex(index);
+  };
 
   const handleUpdate = async () => {
     const token = localStorage.getItem("token");
@@ -106,8 +104,7 @@ const handleEdit = (index) => {
       const payload = {
         ...newProduct,
         title: newProduct.name,
-          images: newProduct.image ? [newProduct.image] : [], 
-
+        images: newProduct.image ? [newProduct.image] : [],
       };
 
       const res = await axiosInstance.put(
@@ -204,7 +201,10 @@ const handleEdit = (index) => {
           min="0"
           value={newProduct.stock}
           onChange={(e) =>
-            setNewProduct({ ...newProduct, stock: Math.max(0, e.target.value) })
+            setNewProduct({
+              ...newProduct,
+              stock: Math.max(0, parseInt(e.target.value) || 0),
+            })
           }
         />
 

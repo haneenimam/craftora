@@ -190,3 +190,17 @@
     opacity: 1;
   }
 }
+
+.title,
+.section-title {
+  font-weight: 700;
+  font-size: 35px;
+  margin-bottom: 20px;
+  color: #004666;
+  text-align: left;
+}
+
+/* Arabic text should align right */
+.rtl-title {
+  text-align: right !important; /* Force right alignment */
+}

@@ -10,10 +10,20 @@ export const CartProvider = ({ children }) => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  // ✅ Restore cart from backup if user was redirected back without completing payment
+  useEffect(() => {
+    const backup = localStorage.getItem("backupCart");
+
+    if (backup && cart.length === 0) {
+      setCart(JSON.parse(backup));
+      localStorage.removeItem("backupCart");
+    }
+  }, []);
 
   const addToCart = (product) => {
     const productId = product._id || product.id;
@@ -57,7 +67,6 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-
   const calculateTotal = () => {
     return cart
       .reduce(
@@ -68,26 +77,21 @@ export const CartProvider = ({ children }) => {
       .toFixed(2);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
 
-
-  
-const clearCart = () => {
-  setCart([]);
-};
-
-
-
-return (
-  <CartContext.Provider
-    value={{
-      cart,
-      addToCart,
-      removeFromCart,
-      updateQuantity,
-      calculateTotal,
-      clearCart, 
-    }}
->
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        calculateTotal,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

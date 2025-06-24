@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./OrdersPage.module.css";
@@ -57,14 +56,30 @@ function OrdersPage() {
                       {itemIndex > 0 ? `.${itemIndex + 1}` : ""}
                     </td>
                     <td data-label="Product">
-                      <span className={styles.productName}>{item.product.name}</span>
+                      {item.product ? (
+                        <span className={styles.productName}>
+                          {item.product.name}
+                        </span>
+                      ) : (
+                        <span className="text-muted fst-italic">
+                          [Deleted Product]
+                        </span>
+                      )}
                     </td>
                     <td data-label="Quantity">
                       <span className={styles.quantity}>{item.quantity}</span>
                     </td>
                     {itemIndex === 0 ? (
-                      <td data-label="Status" rowSpan={order.items.length} className={styles.statusCell}>
-                        <span className={`${styles.status} ${styles[order.status.toLowerCase()]}`}>
+                      <td
+                        data-label="Status"
+                        rowSpan={order.items.length}
+                        className={styles.statusCell}
+                      >
+                        <span
+                          className={`${styles.status} ${
+                            styles[order.status.toLowerCase()]
+                          }`}
+                        >
                           {order.status}
                         </span>
                       </td>
@@ -74,7 +89,9 @@ function OrdersPage() {
               )
             ) : (
               <tr>
-                <td colSpan="4" className="text-center">No orders found.</td>
+                <td colSpan="4" className="text-center">
+                  No orders found.
+                </td>
               </tr>
             )}
           </tbody>

@@ -227,13 +227,14 @@ const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
 
     try {
       setLoading(true);
-
+    
       if (form.paymentMethod === "Cash on Delivery") {
         await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
           orderData
         );
-        clearCart();
+        
+        clearCart(); // ✅ Clear cart immediately for COD
         alert(t("Order placed successfully!", "تم تنفيذ الطلب بنجاح!"));
         navigate("/");
       } else if (form.paymentMethod === "Card") {
@@ -246,16 +247,22 @@ const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
           email: form.email,
           totalPrice: parseFloat(totalPrice.toFixed(2)),
         };
-
+    
         console.log("Sending card payment payload:", payload);
-
+    
         const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL
-          }/api/payment/create-checkout-session`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/payment/create-checkout-session`,
           payload
         );
-
+    
         if (response.data?.url) {
+          // ✅ Backup the cart in case user returns without completing payment
+          localStorage.setItem("backupCart", JSON.stringify(cart));
+    
+          // ✅ Temporarily clear the cart before redirecting to Stripe
+          clearCart();
+    
+          // ✅ Redirect to Stripe payment page
           window.location.href = response.data.url;
         } else {
           throw new Error("Stripe session URL not received.");
@@ -275,6 +282,7 @@ const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
     } finally {
       setLoading(false);
     }
+    
   };
 
   return (

@@ -29,10 +29,14 @@ const ProductDetails = () => {
       })
       .catch((err) => {
         console.error("Error fetching product details:", err);
-        setError("Failed to load product details.");
+        setError(
+          language === "ar"
+            ? "فشل في تحميل تفاصيل المنتج."
+            : "Failed to load product details."
+        );
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, language]);
 
   const handleBuy = () => {
     const stock = product.inStock ?? product.stock ?? product.quantity ?? Infinity;
@@ -61,9 +65,9 @@ const ProductDetails = () => {
     }
   };
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return <div className={styles.loading}>{language === "ar" ? "جارٍ التحميل..." : "Loading..."}</div>;
   if (error) return <div className={styles.error}>{error}</div>;
-  if (!product) return <div className={styles.error}>Product not found.</div>;
+  if (!product) return <div className={styles.error}>{language === "ar" ? "المنتج غير موجود." : "Product not found."}</div>;
 
   const stock = product.inStock ?? product.stock ?? product.quantity ?? 0;
 
@@ -90,7 +94,7 @@ const ProductDetails = () => {
 
         <div className={`${styles["product-info"]} col-md-6`}>
           <h2 className={styles["product-title"]}>
-            {product.name || "Unnamed Product"}
+            {product.name || (language === "ar" ? "منتج بدون اسم" : "Unnamed Product")}
           </h2>
 
           <div className={styles.priceContainer}>
@@ -102,23 +106,25 @@ const ProductDetails = () => {
 
           {stock <= 5 && stock > 0 && (
             <p className={`${styles["product-stock-status"]} ${styles["low-stock"]}`}>
-              Hurry! Only {stock} item{stock > 1 && "s"} left in stock.
+              {language === "ar"
+                ? `بسرعة! تبقى فقط ${stock} ${stock === 1 ? "قطعة" : "قطع"} في المخزون.`
+                : `Hurry! Only ${stock} item${stock > 1 ? "s" : ""} left in stock.`}
             </p>
           )}
           {stock === 0 && (
             <p className={`${styles["product-stock-status"]} ${styles["out-of-stock"]}`}>
-              Out of Stock
+              {language === "ar" ? "غير متوفر في المخزون" : "Out of Stock"}
             </p>
           )}
 
           <p className={styles["product-description"]}>
-            {product.description || "No description available."}
+            {product.description || (language === "ar" ? "لا يوجد وصف." : "No description available.")}
           </p>
 
           {stock > 0 && (
             <div className={styles["action-row"]}>
               <button className={styles["btn-buy-now"]} onClick={handleBuy}>
-                Buy Now
+                {language === "ar" ? "اشترِ الآن" : "Buy Now"}
               </button>
 
               <div className={styles["quantity-counter"]}>
@@ -135,7 +141,7 @@ const ProductDetails = () => {
                 className={styles["btn-continue-shopping"]}
                 onClick={handleContinueShopping}
               >
-                Continue Shopping
+                {language === "ar" ? "متابعة التسوق" : "Continue Shopping"}
               </button>
             </div>
           )}

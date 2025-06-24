@@ -8,12 +8,19 @@
 }
 
 .sectionTitle {
-  font-weight: 700;
-  font-size: 35px;
-  margin-bottom: 30px;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
   color: #093866;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: bold;
+  padding: 0 1rem;
   text-align: left;
 }
+
+.rtlTitle {
+  text-align: right;
+}
+
 
 .newArrivalsProductsContainer {
   display: flex;
