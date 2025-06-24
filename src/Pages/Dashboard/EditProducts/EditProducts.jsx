@@ -32,6 +32,13 @@ function ProductsPage() {
     fetchProducts();
   }, [page]);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -40,11 +47,9 @@ function ProductsPage() {
 
       const fetchedProducts = Array.isArray(data.products)
         ? data.products
-        : Array.isArray(data)
-        ? data
         : [];
 
-      setProducts(fetchedProducts);
+      setProducts(fetchedProducts.filter((p) => p !== null));
       setHasMore(fetchedProducts.length === 20);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -69,15 +74,7 @@ function ProductsPage() {
         });
 
         setProducts([...products, res.data]);
-        setNewProduct({
-          name: "",
-          title: "",
-          price: "",
-          description: "",
-          category: "",
-          stock: 0,
-          image: "",
-        });
+        resetForm();
       } catch (err) {
         console.error("Error adding product:", err);
         setError("Error adding product");
@@ -90,8 +87,13 @@ function ProductsPage() {
   const handleEdit = (index) => {
     const p = products[index];
     setNewProduct({
-      ...p,
-      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : "",
+      name: p.name || p.title || "",
+      title: p.title || "",
+      price: p.price || "",
+      description: p.description || "",
+      category: p.category || "",
+      stock: p.stock || 0,
+      image: Array.isArray(p.images) && p.images[0] ? p.images[0] : "",
     });
     setEditIndex(index);
   };
@@ -111,29 +113,31 @@ function ProductsPage() {
         `/api/products/${productToUpdate._id}`,
         payload,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       const updated = [...products];
       updated[editIndex] = res.data;
       setProducts(updated);
-      setNewProduct({
-        name: "",
-        title: "",
-        price: "",
-        description: "",
-        category: "",
-        stock: 0,
-        image: "",
-      });
-      setEditIndex(null);
+      resetForm();
     } catch (err) {
       console.error("Error updating product:", err);
       setError("Error updating product");
     }
+  };
+
+  const resetForm = () => {
+    setNewProduct({
+      name: "",
+      title: "",
+      price: "",
+      description: "",
+      category: "",
+      stock: 0,
+      image: "",
+    });
+    setEditIndex(null);
   };
 
   return (
@@ -188,8 +192,7 @@ function ProductsPage() {
           <option value="">Select Category</option>
           {categories.map((cat) => (
             <option key={cat.key} value={cat.key}>
-              {cat.key.charAt(0).toUpperCase() +
-                cat.key.slice(1).replace("_", " ")}
+              {cat.key.charAt(0).toUpperCase() + cat.key.slice(1)}
             </option>
           ))}
         </select>
@@ -198,14 +201,14 @@ function ProductsPage() {
           type="number"
           className={`form-control mb-2 ${styles.formControl}`}
           placeholder="Stock"
-          min="0"
           value={newProduct.stock}
-          onChange={(e) =>
+          onChange={(e) => {
+            const stock = parseInt(e.target.value);
             setNewProduct({
               ...newProduct,
-              stock: Math.max(0, parseInt(e.target.value) || 0),
-            })
-          }
+              stock: isNaN(stock) || stock < 0 ? 0 : stock,
+            });
+          }}
         />
 
         <input
@@ -235,9 +238,7 @@ function ProductsPage() {
         )}
       </div>
 
-      <table
-        className={`table table-hover table-bordered text-center ${styles.tableStyle}`}
-      >
+      <table className={`table table-hover table-bordered text-center ${styles.tableStyle}`}>
         <thead className={styles.tableHead}>
           <tr>
             <th>Name</th>
@@ -249,35 +250,37 @@ function ProductsPage() {
           </tr>
         </thead>
         <tbody className={styles.tableHover}>
-          {products.length > 0 ? (
+          {products && products.length > 0 ? (
             products.map((p, i) => (
-              <tr key={p._id || i}>
-                <td>{p.name || p.title}</td>
-                <td>{p.price}</td>
-                <td>{p.category}</td>
-                <td>{p.stock}</td>
-                <td>
-                  {Array.isArray(p.images) && p.images.length > 0 ? (
-                    <img
-                      src={p.images[0]}
-                      alt={p.name}
-                      width="50"
-                      height="50"
-                      style={{ objectFit: "cover" }}
-                    />
-                  ) : (
-                    "No Image"
-                  )}
-                </td>
-                <td>
-                  <button
-                    className={`btn btn-sm ${styles.btnWarning}`}
-                    onClick={() => handleEdit(i)}
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
+              p ? (
+                <tr key={p._id || i}>
+                  <td>{p.name || p.title || "Unnamed Product"}</td>
+                  <td>{p.price ?? "N/A"}</td>
+                  <td>{p.category ?? "N/A"}</td>
+                  <td>{p.stock ?? 0}</td>
+                  <td>
+                    {Array.isArray(p.images) && p.images.length > 0 ? (
+                      <img
+                        src={p.images[0]}
+                        alt={p.name || p.title || "Product"}
+                        width="50"
+                        height="50"
+                        style={{ objectFit: "cover" }}
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className={`btn btn-sm ${styles.btnWarning}`}
+                      onClick={() => handleEdit(i)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ) : null
             ))
           ) : (
             <tr>
