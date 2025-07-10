@@ -24,7 +24,9 @@ const CategoryProducts = lazy(() => import("./Pages/CategoryProducts/CategoryPro
 const ForgotPassword = lazy(() => import("./Pages/ForgotPassword/ForgotPassword"));
 const ResetPassword = lazy(() => import("./Pages/ResetPassword/ResetPassword"));
 const Unauthorized = lazy(() => import("./Pages/Unauthorized"));
+const AdminCreateUser = lazy(() => import("./Pages/Admin/AdminCreateUser"));
 const NotFound = lazy(() => import("./Pages/NotFound/NotFound"));
+
 
 
 const LayoutWithNavbarFooter = ({ Component }) => (
@@ -90,6 +92,13 @@ const App = () => {
               <LayoutWithNavbarFooter Component={ManageUsers} />
             </ProtectedRoute>
           } />
+
+          <Route path="/admin/create-user" element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <LayoutWithNavbarFooter Component={AdminCreateUser} />
+            </ProtectedRoute>
+          } />
+
 
           <Route path="/dashboard/products" element={
             <ProtectedRoute allowedRoles={["Admin"]}>

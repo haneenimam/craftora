@@ -9,7 +9,7 @@ function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("User");
+  //const [role, setRole] = useState("User");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -31,7 +31,7 @@ function Signup() {
     if (confirmPassword !== password)
       formErrors.confirmPassword = "Passwords do not match.";
 
-    if (!role) formErrors.role = "Please select a role.";
+    //if (!role) formErrors.role = "Please select a role.";
 
     setErrors(formErrors);
     if (Object.keys(formErrors).length > 0) return;
@@ -42,7 +42,7 @@ function Signup() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName, lastName, email, password, role }),
+          body: JSON.stringify({ firstName, lastName, email, password }),
         }
       );
 
@@ -124,7 +124,7 @@ function Signup() {
             )}
           </div>
 
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className={styles.formLabel}>Role</label>
             <select
               className={`${styles.formControl} ${
@@ -143,7 +143,7 @@ function Signup() {
             {errors.role && (
               <div className="invalid-feedback d-block">{errors.role}</div>
             )}
-          </div>
+          </div> */}
 
           <div className="mb-3">
             <label className={styles.formLabel}>Password</label>
