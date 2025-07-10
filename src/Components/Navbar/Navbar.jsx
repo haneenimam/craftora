@@ -196,17 +196,16 @@ const Navbar = () => {
                   {`Hi, ${user.firstName} (${user.role})`}
                 </button>
                 <ul
-                  className={`dropdown-menu ${styles.profileDropdownMenu} ${
-                    userDropdownOpen ? "show" : ""
-                  }`}
+                  className={`dropdown-menu ${styles.profileDropdownMenu} ${userDropdownOpen ? "show" : ""
+                    }`}
                 >
                   <li>
                     <button
                       className={`dropdown-item ${styles.logoutItem}`}
                       onClick={() => {
-                        logout(); 
-                        clearCart(); 
-                        navigate("/"); 
+                        logout();
+                        clearCart();
+                        navigate("/");
                       }}
                     >
                       {language === "ar" ? "تسجيل الخروج" : "Logout"}
@@ -245,9 +244,8 @@ const Navbar = () => {
                 {language.toUpperCase()}
               </button>
               <ul
-                className={`dropdown-menu ${styles.langDropdown} ${
-                  languageDropdownOpen ? "show" : ""
-                }`}
+                className={`dropdown-menu ${styles.langDropdown} ${languageDropdownOpen ? "show" : ""
+                  }`}
               >
                 <li>
                   <button
@@ -281,12 +279,21 @@ const Navbar = () => {
                     {language === "ar" ? "لوحة التحكم" : "Dashboard"}
                   </span>
                   <ul
-                    className={`dropdown-menu ${styles.dashboardDropdown} ${
-                      dashboardDropdownOpen ? "show" : ""
-                    }`}
+                    className={`dropdown-menu ${styles.dashboardDropdown} ${dashboardDropdownOpen ? "show" : ""
+                      }`}
                   >
                     {user.role === "admin" && (
                       <>
+                        <li>
+                          <Link
+                            to="/admin/create-user"
+                            className={`dropdown-item ${styles.dashboardDropdownItem}`}
+                            onClick={handleDashboardLinkClick}
+                          >
+                            {language === "ar" ? "إنشاء مستخدم بصلاحيات" : "Create Admin/Seller"}
+                          </Link>
+                        </li>
+
                         <li>
                           <Link
                             to="/dashboard"
@@ -402,9 +409,8 @@ const Navbar = () => {
                   {language === "ar" ? "المنتجات" : "Products"}
                 </span>
                 <ul
-                  className={`dropdown-menu ${styles.productNavDropdown} ${
-                    productsDropdownOpen ? "show" : ""
-                  }`}
+                  className={`dropdown-menu ${styles.productNavDropdown} ${productsDropdownOpen ? "show" : ""
+                    }`}
                 >
                   {categories.map(({ key, labelEn, labelAr }) => (
                     <li key={key}>
@@ -435,9 +441,8 @@ const Navbar = () => {
                       {language === "ar" ? "لوحة التحكم" : "Dashboard"}
                     </span>
                     <ul
-                      className={`dropdown-menu ${styles.dashboardDropdown} ${
-                        dashboardDropdownOpen ? "show" : ""
-                      }`}
+                      className={`dropdown-menu ${styles.dashboardDropdown} ${dashboardDropdownOpen ? "show" : ""
+                        }`}
                     >
                       {/* Same logic for admin/seller here */}
                     </ul>
@@ -457,9 +462,8 @@ const Navbar = () => {
                     {language.toUpperCase()}
                   </span>
                   <ul
-                    className={`dropdown-menu ${styles.langDropdown} ${
-                      languageDropdownOpen ? "show" : ""
-                    }`}
+                    className={`dropdown-menu ${styles.langDropdown} ${languageDropdownOpen ? "show" : ""
+                      }`}
                   >
                     <li>
                       <button
